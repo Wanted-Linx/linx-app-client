@@ -5,7 +5,7 @@ import { responsiveHeight as rh, responsiveWidth as rw } from '../../../style/di
 
 const styles = StyleSheet.create({
   container: { backgroundColor: colors.colorBackground },
-  scrollContent: { flexGrow: 1, paddingTop: rh(36), paddingBottom: rh(70) },
+  scrollContent: { flexGrow: 1, paddingTop: rh(36) },
   profileContainer: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: rw(20) },
   profile: {
     width: rw(28),
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   mainImage: { width: '100%', height: rw(200), marginTop: rh(24) },
   content: { marginHorizontal: rw(20), marginTop: rw(24) },
   categoryContainer: { flexDirection: 'row', marginBottom: rh(10) },
+  recrutingContentContainer: { paddingBottom: rh(70) },
   infoContainer: { borderBottomWidth: 1, borderColor: `${colors.colorGray500}1A`, paddingBottom: rh(24) },
   durationContainer: { flexDirection: 'row' },
   feeContainer: { flexDirection: 'row', marginTop: rh(4) },
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
   textInfoTitle: { marginTop: rh(24) },
   textInfoContent: { color: colors.colorGray300, marginTop: rh(12) },
   textDescription: { color: colors.colorGray300, marginTop: rh(6) },
+  timeline: { marginTop: rh(24) },
   button: {
     position: 'absolute',
     bottom: 0,

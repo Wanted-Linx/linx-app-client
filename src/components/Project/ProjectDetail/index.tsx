@@ -4,19 +4,18 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useRecoilValue } from 'recoil';
 
 import ProjectDetailPresenter from './ProjectDetailPresenter';
-import { HomeStackParamList } from '../../Home';
-import { ProjectStackParamList } from '../../Project';
+import { RootStackParamList } from '../../RootNavigator';
 import { tokenState } from '../../../state';
 import { authAPI, likeApi } from '../../../api';
 import { defaultErrorAlert } from '../../../utils';
 import { TouchableView } from '../../Common';
 import { BookmarkActive, BookmarkInactive } from '../../../assets/images';
 import { responsiveWidth as rw } from '../../../style/dimensions';
+import globalStyles from '../../../style/styles';
 
-type ProjectDetailProps = NativeStackScreenProps<HomeStackParamList, 'ProjectDetail'> &
-  NativeStackScreenProps<ProjectStackParamList, 'ProjectDetail'>;
+type ProjectDetailProps = NativeStackScreenProps<RootStackParamList, 'ProjectDetail'>;
 
-export interface ProjectDetailData {
+export interface ProjectRecruitingData {
   id: number;
   title: string;
   company: string;
@@ -32,7 +31,25 @@ export interface ProjectDetailData {
   bookmark: boolean;
 }
 
-const dummy = {
+export interface ProjectWorkingData {
+  id: number;
+  title: string;
+  company: string;
+  companyProfile: string;
+  image: string;
+  categories: string[];
+  duration: string;
+  description: string;
+  logs: LogData[];
+}
+
+export interface LogData {
+  id: number;
+  title: string;
+  date: string;
+}
+
+const dummy1 = {
   id: 1,
   title: '채용연계형 대규모 해커톤 해,커리어!',
   company: 'Wanted',
@@ -49,20 +66,43 @@ const dummy = {
   bookmark: false,
 };
 
+const dummy2 = {
+  id: 1,
+  title: '채용연계형 대규모 해커톤 해,커리어!',
+  company: 'Wanted',
+  companyProfile:
+    'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
+  categories: ['기획', '개발'],
+  duration: '11.14~12.10',
+  description: '해커리어는 대학생 및 취업 준비생 4인이 팀을 이뤄 참가하는 6주간의 IT 오디션입니다!',
+  logs: [
+    { id: 4, title: '프로젝트 발표', date: '11월 23일' },
+    { id: 3, title: '프로젝트 발표', date: '11월 20일' },
+    { id: 2, title: '프로젝트 발표', date: '11월 18일' },
+    { id: 1, title: '프로젝트 발표', date: '11월 14일' },
+  ],
+};
+
 const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   const accessToken = useRecoilValue(tokenState);
-  const [project, setProject] = useState<ProjectDetailData>(dummy);
+  const [project, setProject] = useState<ProjectRecruitingData | ProjectWorkingData>();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useLayoutEffect(() => {
+    const isRecruiting = route.params.isRecruiting;
     navigation.setOptions({
-      headerRight: () => (
-        <TouchableView viewStyle={{ marginRight: rw(20) }} onPress={handleClickBookmark}>
-          {isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
-        </TouchableView>
-      ),
+      title: isRecruiting ? '' : '프로젝트 상세',
+      headerTitleStyle: globalStyles.textHeadline20,
+      headerRight: isRecruiting
+        ? () => (
+            <TouchableView viewStyle={{ marginRight: rw(20) }} onPress={handleClickBookmark}>
+              {isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
+            </TouchableView>
+          )
+        : undefined,
     });
-  }, [navigation, isBookmarked]);
+  }, [navigation, isBookmarked, route.params.isRecruiting]);
 
   const handleClickBookmark = async () => {
     try {
@@ -87,9 +127,12 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   };
   useEffect(() => {
     // getProjectDetail();
-  }, []);
+    setProject(route.params.isRecruiting ? dummy1 : dummy2);
+  }, [route.params.isRecruiting]);
 
-  return <ProjectDetailPresenter project={project} />;
+  const handeleClickLog = (logId: number) => console.log(logId);
+
+  return <ProjectDetailPresenter project={project} onPressLog={handeleClickLog} />;
 };
 
 export default ProjectDetail;

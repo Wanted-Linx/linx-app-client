@@ -81,7 +81,7 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
 
   const handelPressImage = (url: string) => console.log(url);
   const handelPressProject = (projectId: number) =>
-    navigation.navigate('ProjectDetail', { projectId, isRecruiting: true });
+    navigation.navigate('ProjectDetail', { projectId, isRecruiting: false });
 
   return (
     <HomeMainPresenter

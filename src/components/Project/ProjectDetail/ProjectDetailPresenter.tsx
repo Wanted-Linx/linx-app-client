@@ -3,21 +3,22 @@ import type { FC } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 
 import styles from './ProjectDetail.style';
-import type { ProjectDetailData } from './index';
+import type { ProjectRecruitingData, ProjectWorkingData } from './index';
 import globalStyles from '../../../style/styles';
-import { Button, Tag } from '../../Common';
+import { Button, Tag, ProjectLog } from '../../Common';
 import { BottomModal } from '../../modal';
 
 interface ShowDetailPresenterProps {
-  project: ProjectDetailData | undefined;
+  project: ProjectRecruitingData | ProjectWorkingData | undefined;
+  onPressLog: (logId: number) => void;
 }
 
-const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project }) => {
+const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModalVisible = () => setModalVisible((flag) => !flag);
 
-  return (
+  return project ? (
     <View style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -25,43 +26,64 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project }) => {
         overScrollMode="never"
         bounces={false}>
         <View style={styles.profileContainer}>
-          <Image style={styles.profile} source={{ uri: project?.companyProfile }} resizeMode="cover" />
-          <Text style={globalStyles.textBody15R}>{project?.company}</Text>
+          <Image style={styles.profile} source={{ uri: project.companyProfile }} resizeMode="cover" />
+          <Text style={globalStyles.textBody15R}>{project.company}</Text>
         </View>
         <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{project?.title}</Text>
-        <Image style={styles.mainImage} source={{ uri: project?.image }} resizeMode="cover" />
+        <Image style={styles.mainImage} source={{ uri: project.image }} resizeMode="cover" />
         <View style={styles.content}>
           <View style={styles.categoryContainer}>
-            {project?.categories.map((category) => (
+            {project.categories.map((category) => (
               <Tag key={category} text={category} />
             ))}
           </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.durationContainer}>
-              <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>지원기간</Text>
-              <Text style={globalStyles.textBody14}>{project?.endDate}</Text>
+          {'endDate' in project ? (
+            <View style={styles.recrutingContentContainer}>
+              <View style={styles.infoContainer}>
+                <View style={styles.durationContainer}>
+                  <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>지원기간</Text>
+                  <Text style={globalStyles.textBody14}>{project.endDate}</Text>
+                </View>
+                <View style={styles.feeContainer}>
+                  <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>스폰서비</Text>
+                  <Text style={globalStyles.textBody14}>{project.sponsorFee}</Text>
+                </View>
+              </View>
+              <View style={styles.infoContainer}>
+                <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>직무경험</Text>
+                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.experience}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>지원자격</Text>
+                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.qualification}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트소개</Text>
+                <View style={styles.feeContainer}>
+                  <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>프로젝트 기간</Text>
+                  <Text style={globalStyles.textBody14}>{project.duration}</Text>
+                </View>
+                <Text style={[globalStyles.textBody15R, styles.textDescription]}>{project.description}</Text>
+              </View>
             </View>
-            <View style={styles.feeContainer}>
-              <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>스폰서비</Text>
-              <Text style={globalStyles.textBody14}>{project?.sponsorFee}</Text>
+          ) : (
+            <View>
+              <View style={styles.durationContainer}>
+                <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>진행기간</Text>
+                <Text style={globalStyles.textBody14}>{project.duration}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>활동내역</Text>
+                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.description}</Text>
+              </View>
+              <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트로그</Text>
+              <View style={styles.timeline}>
+                {project.logs.map((log) => (
+                  <ProjectLog log={log} onPress={onPressLog} />
+                ))}
+              </View>
             </View>
-          </View>
-          <View style={styles.infoContainer}>
-            <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>직무경험</Text>
-            <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project?.experience}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-            <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>지원자격</Text>
-            <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project?.qualification}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-            <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트소개</Text>
-            <View style={styles.feeContainer}>
-              <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>프로젝트 기간</Text>
-              <Text style={globalStyles.textBody14}>{project?.duration}</Text>
-            </View>
-            <Text style={[globalStyles.textBody15R, styles.textDescription]}>{project?.description}</Text>
-          </View>
+          )}
         </View>
         {modalVisible ? (
           <BottomModal
@@ -73,14 +95,16 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project }) => {
           />
         ) : null}
       </ScrollView>
-      <Button
-        title="지원하기"
-        style={styles.button}
-        textStyle={[globalStyles.textHeadline18R, styles.textButton]}
-        onPress={toggleModalVisible}
-      />
+      {'endDate' in project ? (
+        <Button
+          title="지원하기"
+          style={styles.button}
+          textStyle={[globalStyles.textHeadline18R, styles.textButton]}
+          onPress={toggleModalVisible}
+        />
+      ) : null}
     </View>
-  );
+  ) : null;
 };
 
 export default ShowDetailPresenter;
