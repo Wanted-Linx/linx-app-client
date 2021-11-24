@@ -34,7 +34,7 @@ const bannerImages: ImageData[] = [
 const projects: ProjectData[] = [
   {
     projectId: 1,
-    categoies: ['기획', '개발'],
+    categories: ['기획', '개발'],
     title: '채용 연계형 해커톤 해, 커리어',
     company: 'Wanted',
     bookmark: false,
@@ -45,7 +45,7 @@ const projects: ProjectData[] = [
   },
   {
     projectId: 2,
-    categoies: ['마케팅', '기획'],
+    categories: ['마케팅', '기획'],
     title: '채용 연계형 해커톤 해, 커리어',
     company: 'Wanted',
     bookmark: true,
@@ -56,7 +56,7 @@ const projects: ProjectData[] = [
   },
   {
     projectId: 3,
-    categoies: ['디자인', '개발'],
+    categories: ['디자인', '개발'],
     title: '채용 연계형 해커톤 해, 커리어',
     company: 'Wanted',
     bookmark: false,
@@ -81,7 +81,7 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
 
   const handelPressImage = (url: string) => console.log(url);
   const handelPressProject = (projectId: number) =>
-    navigation.navigate('ProjectDetail', { projectId, isRecruiting: false });
+    navigation.navigate('ProjectDetail', { projectId, isRecruiting: true });
 
   return (
     <HomeMainPresenter

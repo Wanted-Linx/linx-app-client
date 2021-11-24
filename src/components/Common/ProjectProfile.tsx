@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
@@ -7,29 +7,26 @@ import globalStyles from '../../style/styles';
 import colors from '../../style/colors';
 import { TouchableView } from './TouchableView';
 import { Tag } from './Tag';
-import { BookmarkActive, BookmarkInactive } from '../../assets/images';
 
-export interface ProjectData {
+export interface ProjectProfileData {
   projectId: number;
   categories: string[];
   title: string;
-  company: string;
-  bookmark: boolean;
   description: string;
-  endDate: string;
-  sponsorFee: string;
+  duration: string;
+  club: string;
+  company: string;
 }
 
-export interface ProjectProps {
-  project: ProjectData;
+export interface ProjectProfileProps {
+  project: ProjectProfileData;
   onPress: (projectId: number) => void;
 }
 
-export const Project: FC<ProjectProps> = ({
-  project: { projectId, categories, title, company, bookmark, description, endDate, sponsorFee },
+export const ProjectProfile: FC<ProjectProfileProps> = ({
+  project: { projectId, categories, title, description, duration, club, company },
   onPress,
 }) => {
-  const [isBookmarked, setIsBookmarked] = useState(bookmark);
   return (
     <TouchableView style={styles.container} onPress={() => onPress(projectId)}>
       <View style={styles.categoryContainer}>
@@ -40,19 +37,16 @@ export const Project: FC<ProjectProps> = ({
       <View style={styles.top}>
         <View>
           <Text style={[globalStyles.textBody15M]}>{title}</Text>
-          <Text style={[globalStyles.textBody14, styles.textCompany]}>{company}</Text>
+          <View style={styles.groupContainer}>
+            <Text style={[globalStyles.textBody15R]}>{company} / </Text>
+            <Text style={[globalStyles.textBody15R]}>{club}</Text>
+          </View>
         </View>
-        <TouchableView style={styles.bookmark} onPress={() => setIsBookmarked((flag) => !flag)}>
-          {isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
-        </TouchableView>
       </View>
       <Text style={[globalStyles.textBody15R, styles.textDescription]} numberOfLines={2}>
         {description}
       </Text>
-      <View style={styles.bottom}>
-        <Text style={[globalStyles.textBody15R]}>{endDate}</Text>
-        <Text style={[globalStyles.textBody15R]}>{sponsorFee}</Text>
-      </View>
+      <Text style={[globalStyles.textBody14, styles.textDuration]}>{duration}</Text>
       <View style={styles.line} />
     </TouchableView>
   );
@@ -62,9 +56,8 @@ const styles = StyleSheet.create({
   container: { marginTop: rh(24) },
   categoryContainer: { flexDirection: 'row', marginBottom: rh(10) },
   top: { flexDirection: 'row', justifyContent: 'space-between' },
-  textCompany: { color: colors.colorGray300, marginTop: rh(2) },
-  bookmark: { alignSelf: 'flex-start' },
+  groupContainer: { flexDirection: 'row', marginTop: rh(4) },
   textDescription: { color: colors.colorGray300, marginTop: rh(8) },
-  bottom: { flexDirection: 'row', justifyContent: 'space-between', marginTop: rh(8) },
   line: { height: 1, opacity: 0.1, backgroundColor: colors.colorGray500, marginTop: rh(22) },
+  textDuration: { color: colors.colorGray300, marginTop: rh(8) },
 });

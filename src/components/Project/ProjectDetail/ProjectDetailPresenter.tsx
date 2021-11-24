@@ -5,15 +5,16 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import styles from './ProjectDetail.style';
 import type { ProjectRecruitingData, ProjectWorkingData } from './index';
 import globalStyles from '../../../style/styles';
-import { Button, Tag, ProjectLog } from '../../Common';
+import { Button, Tag, ProjectLog, TouchableView } from '../../Common';
 import { BottomModal } from '../../modal';
 
 interface ShowDetailPresenterProps {
   project: ProjectRecruitingData | ProjectWorkingData | undefined;
+  onPressProfile: (companyId: number) => void;
   onPressLog: (logId: number) => void;
 }
 
-const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog }) => {
+const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressProfile, onPressLog }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModalVisible = () => setModalVisible((flag) => !flag);
@@ -25,10 +26,13 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
         bounces={false}>
-        <View style={styles.profileContainer}>
-          <Image style={styles.profile} source={{ uri: project.companyProfile }} resizeMode="cover" />
-          <Text style={globalStyles.textBody15R}>{project.company}</Text>
-        </View>
+        <TouchableView
+          style={styles.profileView}
+          viewStyle={styles.profileContainer}
+          onPress={() => onPressProfile(project.company.id)}>
+          <Image style={styles.profile} source={{ uri: project.company.profile }} resizeMode="cover" />
+          <Text style={globalStyles.textBody15R}>{project.company.name}</Text>
+        </TouchableView>
         <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{project?.title}</Text>
         <Image style={styles.mainImage} source={{ uri: project.image }} resizeMode="cover" />
         <View style={styles.content}>
@@ -79,7 +83,7 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
               <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트로그</Text>
               <View style={styles.timeline}>
                 {project.logs.map((log) => (
-                  <ProjectLog log={log} onPress={onPressLog} />
+                  <ProjectLog key={log.id} log={log} onPress={onPressLog} />
                 ))}
               </View>
             </View>

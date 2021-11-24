@@ -18,8 +18,11 @@ type ProjectDetailProps = NativeStackScreenProps<RootStackParamList, 'ProjectDet
 export interface ProjectRecruitingData {
   id: number;
   title: string;
-  company: string;
-  companyProfile: string;
+  company: {
+    id: number;
+    name: string;
+    profile: string;
+  };
   image: string;
   categories: string[];
   endDate: string;
@@ -34,8 +37,11 @@ export interface ProjectRecruitingData {
 export interface ProjectWorkingData {
   id: number;
   title: string;
-  company: string;
-  companyProfile: string;
+  company: {
+    id: number;
+    name: string;
+    profile: string;
+  };
   image: string;
   categories: string[];
   duration: string;
@@ -52,9 +58,12 @@ export interface LogData {
 const dummy1 = {
   id: 1,
   title: '채용연계형 대규모 해커톤 해,커리어!',
-  company: 'Wanted',
-  companyProfile:
-    'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  company: {
+    id: 1,
+    name: 'Wanted',
+    profile:
+      'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  },
   image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
   categories: ['기획', '개발'],
   endDate: 'D-14',
@@ -69,9 +78,12 @@ const dummy1 = {
 const dummy2 = {
   id: 1,
   title: '채용연계형 대규모 해커톤 해,커리어!',
-  company: 'Wanted',
-  companyProfile:
-    'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  company: {
+    id: 1,
+    name: 'Wanted',
+    profile:
+      'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  },
   image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
   categories: ['기획', '개발'],
   duration: '11.14~12.10',
@@ -96,7 +108,7 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
       headerTitleStyle: globalStyles.textHeadline20,
       headerRight: isRecruiting
         ? () => (
-            <TouchableView viewStyle={{ marginRight: rw(20) }} onPress={handleClickBookmark}>
+            <TouchableView viewStyle={{ marginRight: rw(16) }} onPress={handleClickBookmark}>
               {isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
             </TouchableView>
           )
@@ -130,9 +142,14 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
     setProject(route.params.isRecruiting ? dummy1 : dummy2);
   }, [route.params.isRecruiting]);
 
+  const handeleClickProfile = (companyId: number) =>
+    navigation.navigate('MainNavigator', {
+      screen: 'Search',
+      params: { screen: 'ProfileDetail', params: { companyId } },
+    });
   const handeleClickLog = (logId: number) => console.log(logId);
 
-  return <ProjectDetailPresenter project={project} onPressLog={handeleClickLog} />;
+  return <ProjectDetailPresenter project={project} onPressProfile={handeleClickProfile} onPressLog={handeleClickLog} />;
 };
 
 export default ProjectDetail;

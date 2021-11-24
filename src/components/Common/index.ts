@@ -7,3 +7,4 @@ export * from './RandomProfile';
 export * from './SearchInput';
 export * from './ImageCarousel';
 export * from './ProjectLog';
+export * from './ProjectProfile';

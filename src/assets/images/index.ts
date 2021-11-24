@@ -16,6 +16,8 @@ import BookmarkActive from './BookmarkActive.svg';
 import BookmarkInactive from './BookmarkInactive.svg';
 import LeftArrow from './LeftArrow.svg';
 import CloseIcon from './CloseIcon.svg';
+import HeartIconActive from './HeartIconActive.svg';
+import HeartIconInactive from './HeartIconInactive.svg';
 import BannerImage from './BannerImage.png';
 
 export {
@@ -38,4 +40,6 @@ export {
   BookmarkInactive,
   LeftArrow,
   CloseIcon,
+  HeartIconActive,
+  HeartIconInactive,
 };

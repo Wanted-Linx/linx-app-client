@@ -16,7 +16,7 @@ export interface ProjectLogProps {
 
 export const ProjectLog: FC<ProjectLogProps> = ({ log, onPress }) => {
   return (
-    <View key={log.id} style={styles.log}>
+    <View style={styles.log}>
       <View style={styles.indicatorContainer}>
         <View style={styles.indicator}>
           <Svg height={rw(12)} width={rw(13)}>

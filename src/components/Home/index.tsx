@@ -7,6 +7,9 @@ import HomeMain from './HomeMain';
 import { LinxLogo } from '../../assets/images';
 import { responsiveWidth as rw } from '../../style/dimensions';
 import colors from '../../style/colors';
+import { TouchableView } from '../Common';
+import { LeftArrow } from '../../assets/images';
+import globalStyles from '../../style/styles';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +22,7 @@ const screenOptions: NativeStackNavigationOptions = {
   animation: 'slide_from_right',
 };
 
-const defaultHeaderOption = {
+export const defaultHeaderOption = {
   title: '',
   headerShown: true,
   headerShadowVisible: false,
@@ -32,6 +35,20 @@ const mainScreenOptions = {
   ...defaultHeaderOption,
   headerLeft: () => <Image source={LinxLogo} style={{ width: rw(70), height: rw(37) }} />,
 };
+
+export const leftArrowScreenOptions = (navigation: any, title?: string): NativeStackNavigationOptions => ({
+  ...defaultHeaderOption,
+  title: title ?? '',
+  headerTitleStyle: {
+    ...globalStyles.textHeadline20,
+  },
+  headerShadowVisible: true,
+  headerLeft: () => (
+    <TouchableView onPress={() => navigation.goBack()}>
+      <LeftArrow />
+    </TouchableView>
+  ),
+});
 
 const HomeNavigator = () => {
   return (
