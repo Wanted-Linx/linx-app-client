@@ -8,3 +8,4 @@ export * from './SearchInput';
 export * from './ImageCarousel';
 export * from './ProjectLog';
 export * from './ProjectProfile';
+export * from './ProfileSearch';

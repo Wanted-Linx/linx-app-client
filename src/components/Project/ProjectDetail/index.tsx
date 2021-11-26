@@ -142,14 +142,9 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
     setProject(route.params.isRecruiting ? dummy1 : dummy2);
   }, [route.params.isRecruiting]);
 
-  const handeleClickProfile = (companyId: number) =>
-    navigation.navigate('MainNavigator', {
-      screen: 'Search',
-      params: { screen: 'ProfileDetail', params: { companyId } },
-    });
   const handeleClickLog = (logId: number) => console.log(logId);
 
-  return <ProjectDetailPresenter project={project} onPressProfile={handeleClickProfile} onPressLog={handeleClickLog} />;
+  return <ProjectDetailPresenter project={project} onPressLog={handeleClickLog} />;
 };
 
 export default ProjectDetail;

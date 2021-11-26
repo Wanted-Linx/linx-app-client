@@ -6,7 +6,6 @@ import { responsiveHeight as rh, responsiveWidth as rw } from '../../../style/di
 const styles = StyleSheet.create({
   container: { backgroundColor: colors.colorBackground },
   scrollContent: { flexGrow: 1, paddingTop: rh(36) },
-  profileView: { alignSelf: 'flex-start' },
   profileContainer: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: rw(20) },
   profile: {
     width: rw(28),
