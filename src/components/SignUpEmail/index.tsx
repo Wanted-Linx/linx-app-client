@@ -4,11 +4,11 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSetRecoilState } from 'recoil';
 
-import { loginApi, isApiError, signUpApi } from '../../api';
+import { RootStackParamList } from '../RootNavigator';
+import { userApi } from '../../api';
 import SignUpEmailPresenter from './SignUpEmailPresenter';
 import type { ValidError } from '../Common/TitleTextInput';
 import { defaultErrorAlert, checkEmailValidation, checkPasswordValidation } from '../../utils';
-import { tokenState, nicknameState } from '../../state';
 
 type SignUpEmailProps = NativeStackScreenProps<RootStackParamList, 'SignUpEmail'>;
 
@@ -17,19 +17,6 @@ const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState<ValidError>(null);
   const [errorPassword, setErrorPassword] = useState<ValidError>(null);
-  const setToken = useSetRecoilState(tokenState);
-  const setNickname = useSetRecoilState(nicknameState);
-
-  const login = async (data: { accessToken: string; refreshToken: string; nickname: string }) => {
-    try {
-      await AsyncStorage.setItem('refreshToken', data.refreshToken);
-      setToken(data.accessToken);
-      setNickname(data.nickname);
-      navigation.replace('Main');
-    } catch (error) {
-      defaultErrorAlert();
-    }
-  };
 
   const handleEmailChange = (email: string) => setEmail(email);
   const handlePasswordChange = (password: string) => setPassword(password);
@@ -55,41 +42,7 @@ const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
       await signUpApi.checkEmailDuplicate({ username: email });
       navigation.navigate('SignUpProfile', { username: email, password });
     } catch (error) {
-      if (isApiError(error)) {
-        const response = error.response;
-        const status = response?.status;
-        const errorMessage = response?.data.error;
-        if (status === 400) {
-          setErrorEmail({ error: true, errorMessage });
-        }
-        if (status === 500 || !status) {
-          defaultErrorAlert();
-        }
-      } else {
-        defaultErrorAlert();
-      }
-    }
-  };
-  // ios 테스트 필요
-  const handleKakaoClick = async () => {
-    try {
-      const { accessToken } = await kakaoLogin();
-      const { data } = await loginApi.kakaoLogin({ kakaoToken: accessToken });
-      login(data);
-    } catch (error: any) {
-      if (isApiError(error)) {
-        const response = error.response;
-        const status = response?.status;
-        const data = response?.data;
-        if (status === 400) {
-          navigation.navigate('SignUpProfile', { username: data.username });
-        }
-        if (status === 500 || !status) {
-          defaultErrorAlert();
-        }
-      } else {
-        defaultErrorAlert();
-      }
+      defaultErrorAlert();
     }
   };
 
@@ -100,7 +53,6 @@ const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
       onEmailChange={handleEmailChange}
       onPasswordChange={handlePasswordChange}
       onNextClick={handleNextClick}
-      onKakaoClick={handleKakaoClick}
       errorEmail={errorEmail}
       errorPassword={errorPassword}
     />

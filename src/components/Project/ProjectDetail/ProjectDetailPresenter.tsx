@@ -11,9 +11,11 @@ import { BottomModal } from '../../modal';
 interface ShowDetailPresenterProps {
   project: ProjectRecruitingData | ProjectWorkingData | undefined;
   onPressLog: (logId: number) => void;
+  onPressLogin: () => void;
+  onPressSignUp: () => void;
 }
 
-const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog }) => {
+const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog, onPressLogin, onPressSignUp }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModalVisible = () => setModalVisible((flag) => !flag);
@@ -91,18 +93,20 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
             subtitle={'프로젝트를 지원하기 전에\n로그인을 먼저 해주세요'}
             buttonTexts={['회원가입', '로그인']}
             onPressClose={toggleModalVisible}
-            onPresses={[() => console.log('회원가입'), () => console.log('로그인')]}
+            onPresses={[
+              () => {
+                onPressSignUp();
+                toggleModalVisible();
+              },
+              () => {
+                onPressLogin();
+                toggleModalVisible();
+              },
+            ]}
           />
         ) : null}
       </ScrollView>
-      {'endDate' in project ? (
-        <Button
-          title="지원하기"
-          style={styles.button}
-          textStyle={[globalStyles.textHeadline18R, styles.textButton]}
-          onPress={toggleModalVisible}
-        />
-      ) : null}
+      {'endDate' in project ? <Button title="지원하기" style={styles.button} onPress={toggleModalVisible} /> : null}
     </View>
   ) : null;
 };

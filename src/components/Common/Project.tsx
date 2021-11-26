@@ -66,5 +66,5 @@ const styles = StyleSheet.create({
   bookmark: { alignSelf: 'flex-start' },
   textDescription: { color: colors.colorGray300, marginTop: rh(8) },
   bottom: { flexDirection: 'row', justifyContent: 'space-between', marginTop: rh(8) },
-  line: { height: 1, opacity: 0.1, backgroundColor: colors.colorGray500, marginTop: rh(22) },
+  line: { height: 0.7, opacity: 0.1, backgroundColor: colors.colorGray500, marginTop: rh(22) },
 });

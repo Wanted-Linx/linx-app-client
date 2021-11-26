@@ -82,6 +82,8 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
   const handelPressImage = (url: string) => console.log(url);
   const handelPressProject = (projectId: number) =>
     navigation.navigate('ProjectDetail', { projectId, isRecruiting: true });
+  const handelPressLogin = () => navigation.navigate('Login', { isStudent: false });
+  const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: false });
 
   return (
     <HomeMainPresenter
@@ -89,6 +91,8 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
       projects={projects}
       onPressImage={handelPressImage}
       onPressProject={handelPressProject}
+      onPressLogin={handelPressLogin}
+      onPressSignUp={handelPressSignUp}
     />
   );
 };

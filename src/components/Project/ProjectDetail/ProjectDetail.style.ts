@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   profile: {
     width: rw(28),
     height: rw(28),
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderColor: colors.colorGray100,
     borderRadius: rw(14),
     marginRight: rw(12),

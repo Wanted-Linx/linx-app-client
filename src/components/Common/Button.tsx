@@ -17,7 +17,8 @@ export const Button: FC<ButtonProps> = ({ title, textStyle, icon, style, ...touc
   return (
     <TouchableOpacity style={[styles.view, style]} {...touchableProps}>
       {icon ? icon() : null}
-      <Text style={[globalStyles.textBody15R, { color: colors.colorGray000, marginLeft: icon ? rw(6) : 0 }, textStyle]}>
+      <Text
+        style={[globalStyles.textHeadline18M, { color: colors.colorGray000, marginLeft: icon ? rw(6) : 0 }, textStyle]}>
         {title}
       </Text>
     </TouchableOpacity>

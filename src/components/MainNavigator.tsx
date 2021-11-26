@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { FC } from 'react';
 import type { NavigatorScreenParams } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SplashScreen from 'react-native-splash-screen';
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 
 import Home from './Home';
@@ -61,6 +62,13 @@ const profileOptions: BottomTabNavigationOptions = {
 };
 
 const MainNavigator: FC = () => {
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      SplashScreen.hide();
+    }, 1500);
+    return () => clearTimeout(timeOutId);
+  }, []);
+
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen name="Home" component={Home} options={homeOptions} />

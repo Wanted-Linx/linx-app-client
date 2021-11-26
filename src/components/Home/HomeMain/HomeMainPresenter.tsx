@@ -15,6 +15,8 @@ interface HomeMainPresenterProps {
   projects: ProjectData[];
   onPressImage: (url: string) => void;
   onPressProject: (projectId: number) => void;
+  onPressLogin: () => void;
+  onPressSignUp: () => void;
 }
 
 const categories = [
@@ -24,7 +26,14 @@ const categories = [
   { icon: <DesignCategory />, name: '디자인' },
 ];
 
-const HomeMainPresenter: FC<HomeMainPresenterProps> = ({ bannerImages, projects, onPressImage, onPressProject }) => {
+const HomeMainPresenter: FC<HomeMainPresenterProps> = ({
+  bannerImages,
+  projects,
+  onPressImage,
+  onPressProject,
+  onPressLogin,
+  onPressSignUp,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModalVisible = () => setModalVisible((visible) => !visible);
@@ -51,6 +60,7 @@ const HomeMainPresenter: FC<HomeMainPresenterProps> = ({ bannerImages, projects,
           title="프로젝트 등록하기"
           icon={() => <AddIconWhite />}
           style={styles.registerButton}
+          textStyle={styles.textRegister}
           onPress={toggleModalVisible}
         />
       </View>
@@ -64,7 +74,16 @@ const HomeMainPresenter: FC<HomeMainPresenterProps> = ({ bannerImages, projects,
           subtitle={'프로젝트를 등록하기 전에\n로그인을 먼저 해주세요'}
           buttonTexts={['회원가입', '로그인']}
           onPressClose={toggleModalVisible}
-          onPresses={[() => console.log('회원가입'), () => console.log('로그인')]}
+          onPresses={[
+            () => {
+              onPressSignUp();
+              toggleModalVisible();
+            },
+            () => {
+              onPressLogin();
+              toggleModalVisible();
+            },
+          ]}
         />
       ) : null}
     </ScrollView>

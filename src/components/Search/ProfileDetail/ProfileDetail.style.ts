@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     width: rw(80),
     height: rw(72),
     borderRadius: rw(4),
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderColor: colors.colorGray100,
     marginBottom: rh(16),
   },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   countView: { alignItems: 'center' },
   textCountTitle: { marginBottom: rh(8) },
-  line: { width: 1, height: '100%', opacity: 0.1, backgroundColor: colors.colorGray500 },
+  line: { width: 0.7, height: '100%', opacity: 0.1, backgroundColor: colors.colorGray500 },
   infoContainer: {
     borderBottomWidth: 1,
     borderColor: `${colors.colorGray500}1A`,

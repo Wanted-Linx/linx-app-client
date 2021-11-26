@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 import ProjectDetailPresenter from './ProjectDetailPresenter';
 import { RootStackParamList } from '../../RootNavigator';
-import { tokenState } from '../../../state';
+import { userTypeState } from '../../../state';
 import { authAPI, likeApi } from '../../../api';
 import { defaultErrorAlert } from '../../../utils';
 import { TouchableView } from '../../Common';
@@ -97,7 +97,6 @@ const dummy2 = {
 };
 
 const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
-  const accessToken = useRecoilValue(tokenState);
   const [project, setProject] = useState<ProjectRecruitingData | ProjectWorkingData>();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -142,9 +141,18 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
     setProject(route.params.isRecruiting ? dummy1 : dummy2);
   }, [route.params.isRecruiting]);
 
-  const handeleClickLog = (logId: number) => console.log(logId);
+  const handelePressLog = (logId: number) => console.log(logId);
+  const handelPressLogin = () => navigation.navigate('Login', { isStudent: true });
+  const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: true });
 
-  return <ProjectDetailPresenter project={project} onPressLog={handeleClickLog} />;
+  return (
+    <ProjectDetailPresenter
+      project={project}
+      onPressLog={handelePressLog}
+      onPressLogin={handelPressLogin}
+      onPressSignUp={handelPressSignUp}
+    />
+  );
 };
 
 export default ProjectDetail;

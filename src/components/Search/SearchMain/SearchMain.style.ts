@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
   topTab: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderColor: `${colors.colorGray500}1A`,
     backgroundColor: colors.colorGray000,
   },
   tab: { flex: 1, height: rh(48), justifyContent: 'center', alignItems: 'center' },
-  line: { width: 1, height: rh(36), backgroundColor: `${colors.colorGray500}1A` },
+  line: { width: 0.7, height: rh(36), backgroundColor: `${colors.colorGray500}1A` },
   profileContainer: { paddingHorizontal: rw(20) },
 });
 

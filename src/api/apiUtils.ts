@@ -10,10 +10,10 @@ const API = Axios.create({
   timeout: 1000,
 });
 
-const authAPI = (accessToken: string): AxiosInstance =>
+const authAPI = (userId: number): AxiosInstance =>
   Axios.create({
     baseURL: BASE_URL,
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: { user: userId },
     timeout: 1000,
   });
 

@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
   top: { flexDirection: 'row', justifyContent: 'space-between' },
   groupContainer: { flexDirection: 'row', marginTop: rh(4) },
   textDescription: { color: colors.colorGray300, marginTop: rh(8) },
-  line: { height: 1, opacity: 0.1, backgroundColor: colors.colorGray500, marginTop: rh(22) },
+  line: { height: 0.7, opacity: 0.1, backgroundColor: colors.colorGray500, marginTop: rh(22) },
   textDuration: { color: colors.colorGray300, marginTop: rh(8) },
 });

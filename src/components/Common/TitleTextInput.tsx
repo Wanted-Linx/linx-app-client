@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import type { FC, ComponentProps } from 'react';
-import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
-import type { StyleProp, TextStyle } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import globalStyles from '../../style/styles';
 import colors from '../../style/colors';
-import { responsiveHeight as rh } from '../../style/dimensions';
+import { responsiveWidth as rw, responsiveHeight as rh } from '../../style/dimensions';
 
 export type ValidError = {
   error: boolean;
@@ -13,21 +12,15 @@ export type ValidError = {
 } | null;
 
 export type TitleTextInputProps = ComponentProps<typeof TextInput> & {
-  title: string;
   normalColor?: string;
-  focusedColor?: string;
   errorColor?: string;
   validError?: ValidError;
-  titleStyle?: StyleProp<TextStyle>;
 };
 
 export const TitleTextInput: FC<TitleTextInputProps> = ({
-  title,
   normalColor = colors.colorPrimary300,
-  focusedColor = colors.colorText000,
   errorColor = colors.colorError,
   validError,
-  titleStyle,
   style,
   ...textInputProps
 }) => {
@@ -44,18 +37,9 @@ export const TitleTextInput: FC<TitleTextInputProps> = ({
 
   const handleChange = (text: string) => {
     setText(text);
-    if (text === '') {
-      setColor(normalColor);
-    } else {
-      setColor(focusedColor);
-    }
+    setColor(normalColor);
     if (isError) {
       setIsError(false);
-    }
-  };
-  const handleFocus = () => {
-    if (!isError) {
-      setColor(focusedColor);
     }
   };
   const handleBlur = () => {
@@ -65,25 +49,33 @@ export const TitleTextInput: FC<TitleTextInputProps> = ({
   };
 
   return (
-    <View>
-      <Text style={[globalStyles.textBody15, { color, marginBottom: rh(8) }, titleStyle]}>{title}</Text>
+    <View style={styles.view}>
       <TextInput
         {...textInputProps}
-        style={[globalStyles.textBody15, styles.textInput, { borderBottomWidth: 1, borderBottomColor: color, color }, style]}
+        style={[
+          globalStyles.textBody14,
+          styles.textInput,
+          { borderBottomWidth: 1, borderBottomColor: color, color },
+          style,
+        ]}
         onChange={({ nativeEvent }) => handleChange(nativeEvent.text)}
-        onFocus={() => handleFocus()}
         onBlur={() => handleBlur()}
       />
-      {isError ? <Text style={[globalStyles.textCaption, { color: errorColor }]}>{validError?.errorMessage}</Text> : null}
+      {isError ? (
+        <Text style={[globalStyles.textBody14, { color: errorColor }]}>{validError?.errorMessage}</Text>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  view: { width: '100%', marginBottom: rh(12) },
   textInput: {
-    backgroundColor: 'transparent',
-    paddingBottom: Platform.select({ ios: rh(6), android: 0 }),
-    paddingHorizontal: 0,
-    paddingTop: 0,
+    backgroundColor: colors.colorGray000,
+    borderColor: `${colors.colorGray300}40`,
+    borderWidth: 0.7,
+    borderRadius: rw(4),
+    paddingHorizontal: rw(16),
+    paddingVertical: rw(14),
   },
 });

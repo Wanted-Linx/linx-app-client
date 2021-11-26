@@ -38,15 +38,10 @@ export const BottomModal: FC<BottomModalProps> = ({
             <Button
               title={buttonTexts[0]}
               style={styles.buttonFirst}
-              textStyle={globalStyles.textHeadline18R}
+              textStyle={styles.textButtonFirst}
               onPress={onPresses[0]}
             />
-            <Button
-              title={buttonTexts[1]}
-              style={styles.buttonSecond}
-              textStyle={styles.textButtonSecond}
-              onPress={onPresses[1]}
-            />
+            <Button title={buttonTexts[1]} style={styles.buttonSecond} onPress={onPresses[1]} />
           </View>
         </SafeAreaView>
       </View>
@@ -67,9 +62,9 @@ const styles = StyleSheet.create({
     paddingTop: rw(20),
   },
   close: { alignSelf: 'flex-end', marginRight: rw(20), marginBottom: rh(10) },
-  textSubtitle: { marginTop: rh(24), marginBottom: rh(40) },
+  textSubtitle: { textAlign: 'center', marginTop: rh(24), marginBottom: rh(40) },
   buttonContainer: { width: '100%', flexDirection: 'row' },
-  buttonFirst: { flex: 1, height: rh(60), borderWidth: 1, borderColor: colors.colorGray500 },
+  buttonFirst: { flex: 1, height: rh(60), borderWidth: 0.7, borderColor: colors.colorGray500 },
   buttonSecond: { flex: 1, height: rh(60), backgroundColor: colors.colorGray500 },
-  textButtonSecond: { ...globalStyles.textHeadline18R, color: colors.colorGray000 },
+  textButtonFirst: { color: colors.colorGray500 },
 });
