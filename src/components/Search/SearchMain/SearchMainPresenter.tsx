@@ -11,12 +11,19 @@ import type { ProfileSearchData } from '../../Common';
 
 interface SearchMainPresenterProps {
   isClubOn: boolean;
-  profiles: ProfileSearchData[];
+  clubList: ProfileSearchData[];
+  companyList: ProfileSearchData[];
   onPressTopTab: (isClubOn: boolean) => void;
   onPressProfile: (profileId: number) => void;
 }
 
-const SearchMainPresenter: FC<SearchMainPresenterProps> = ({ isClubOn, profiles, onPressTopTab, onPressProfile }) => {
+const SearchMainPresenter: FC<SearchMainPresenterProps> = ({
+  isClubOn,
+  clubList,
+  companyList,
+  onPressTopTab,
+  onPressProfile,
+}) => {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.topTab} edges={['top']}>
@@ -33,7 +40,7 @@ const SearchMainPresenter: FC<SearchMainPresenterProps> = ({ isClubOn, profiles,
         </TouchableView>
       </SafeAreaView>
       <FlatList
-        data={profiles}
+        data={isClubOn ? clubList : companyList}
         renderItem={({ item }) => <ProfileSearch profile={item} onPress={onPressProfile} />}
         extraData={isClubOn}
         keyExtractor={(item) => item.id.toString()}

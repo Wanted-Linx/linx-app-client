@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
@@ -6,6 +6,7 @@ import { responsiveWidth as rw, responsiveHeight as rh } from '../../style/dimen
 import globalStyles from '../../style/styles';
 import colors from '../../style/colors';
 import { TouchableView } from './TouchableView';
+import { clubApi, companyApi, authAPI } from '../../api';
 
 export interface ProfileSearchData {
   id: number;
@@ -22,16 +23,28 @@ export interface ProfileSearchProps {
 }
 
 export const ProfileSearch: FC<ProfileSearchProps> = ({ profile, onPress }) => {
+  const [image, setImage] = useState(
+    'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  );
+  const getProfileImage = async () => {
+    try {
+      let result;
+      if (profile.organization) {
+        result = await clubApi.getProfileImage(authAPI(profile.id, 'blob'));
+      } else {
+        result = await companyApi.getProfileImage(authAPI(profile.id, 'blob'));
+      }
+      setImage(URL.createObjectURL(result.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getProfileImage();
+  }, []);
   return (
     <TouchableView style={styles.container} viewStyle={styles.viewStyle} onPress={() => onPress(profile.id)}>
-      <Image
-        source={{
-          uri:
-            profile.image ??
-            'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
-        }}
-        style={styles.profile}
-      />
+      <Image source={{ uri: image }} style={styles.profile} />
       <View style={styles.textContainer}>
         <Text style={globalStyles.textBody15M}>{profile.name}</Text>
         <Text style={[globalStyles.textBody14, styles.textCategory]}>
