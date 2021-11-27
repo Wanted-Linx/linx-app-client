@@ -21,7 +21,7 @@ export interface ProjectRecruitingData {
   company: {
     id: number;
     name: string;
-    profile_image: string;
+    profile_image?: string;
   };
   image: string;
   task_type: string[];
@@ -41,7 +41,7 @@ export interface ProjectWorkingData {
   company: {
     id: number;
     name: string;
-    profile_image: string;
+    profile_image?: string;
   };
   image: string;
   task_type: string[];
@@ -80,8 +80,7 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   const getProject = async () => {
     try {
       const { data } = await projectApi.getProject(authAPI(1), route.params.projectId);
-      const profile = await companyApi.getProfileImage(authAPI(data.company.id));
-      data.company.profile_image = profile.data;
+      data.company.profile_image = null;
       setProject(
         route.params.isRecruiting
           ? {
@@ -92,12 +91,29 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
           : { ...data, image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg' },
       );
     } catch (error) {
+      console.log(error);
       defaultErrorAlert();
     }
   };
   useEffect(() => {
     getProject();
   }, [route.params.projectId]);
+
+  const getProfileImage = async () => {
+    try {
+      if (project) {
+        const profile = await companyApi.getProfileImage(authAPI(project.company.id, 'blob'));
+        const { company, ...data } = project;
+        company.profile_image = URL.createObjectURL(profile.data);
+        setProject({ ...data, company });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getProfileImage();
+  }, [project]);
 
   const handlePressBookmark = () => setIsBookmarked((flag) => !flag);
   const handelePressLog = (logId: number) => console.log(logId);

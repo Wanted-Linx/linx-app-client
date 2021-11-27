@@ -41,7 +41,7 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
             style={styles.profile}
             source={{
               uri: project.company.profile_image
-                ? `data:image/png;base64,${project.company.profile_image}`
+                ? project.company.profile_image
                 : 'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
             }}
             resizeMode="cover"
