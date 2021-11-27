@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { DateTime } from 'luxon';
 
 import styles from './HomeMain.style';
 import { Button, ImageCarousel, TouchableView, Project } from '../../Common';
@@ -11,12 +10,14 @@ import { PlanCategory, MarketingCategory, DevCategory, DesignCategory, AddIconWh
 import { BottomModal } from '../../modal';
 
 interface HomeMainPresenterProps {
+  userType: string;
   bannerImages: ImageData[];
   projects: ProjectData[];
   onPressImage: (url: string) => void;
   onPressProject: (projectId: number) => void;
   onPressLogin: () => void;
   onPressSignUp: () => void;
+  onPressAddProject: () => void;
 }
 
 const categories = [
@@ -27,12 +28,14 @@ const categories = [
 ];
 
 const HomeMainPresenter: FC<HomeMainPresenterProps> = ({
+  userType,
   bannerImages,
   projects,
   onPressImage,
   onPressProject,
   onPressLogin,
   onPressSignUp,
+  onPressAddProject,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -54,19 +57,23 @@ const HomeMainPresenter: FC<HomeMainPresenterProps> = ({
           </TouchableView>
         ))}
       </View>
-      <View style={styles.registerContainer}>
-        <Text style={globalStyles.textBody15R}>기업이신가요?</Text>
-        <Button
-          title="프로젝트 등록하기"
-          icon={() => <AddIconWhite />}
-          style={styles.registerButton}
-          textStyle={styles.textRegister}
-          onPress={toggleModalVisible}
-        />
-      </View>
+      {userType !== 'student' ? (
+        <View style={styles.registerContainer}>
+          {userType !== '' ? null : (
+            <Text style={[globalStyles.textBody15R, styles.textRegisterTitle]}>기업이신가요?</Text>
+          )}
+          <Button
+            title="프로젝트 등록하기"
+            icon={() => <AddIconWhite />}
+            style={styles.registerButton}
+            textStyle={styles.textRegister}
+            onPress={userType === 'company' ? onPressAddProject : toggleModalVisible}
+          />
+        </View>
+      ) : null}
       <Text style={[globalStyles.textHeadline20, styles.projectTitle]}>인기 프로젝트</Text>
-      {projects.map((project) => (
-        <Project key={project.projectId} project={project} onPress={onPressProject} />
+      {projects.map((project, index) => (
+        <Project key={index} project={project} onPress={onPressProject} />
       ))}
       {modalVisible ? (
         <BottomModal

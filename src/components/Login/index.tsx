@@ -5,9 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSetRecoilState } from 'recoil';
 
 import { RootStackParamList } from '../RootNavigator';
-import { loginApi } from '../../api';
+import { userApi } from '../../api';
 import LoginPresenter from './LoginPresenter';
-import type { ValidError } from '../Common/TitleTextInput';
+import type { ValidError } from '../Common/CustomTextInput';
 import { defaultErrorAlert } from '../../utils';
 import { userTypeState } from '../../state';
 
@@ -34,8 +34,10 @@ const Login: FC<LoginProps> = ({ route, navigation }) => {
     }
     const body = { email, password, kind: isStudent ? 'student' : 'company' };
     try {
-      const { data } = await loginApi.emailLogin(body);
-      await AsyncStorage.setItem('userId', data.id);
+      const { data } = await userApi.emailLogin(body);
+      console.log(data);
+      await AsyncStorage.setItem('userId', data.id.toString());
+      await AsyncStorage.setItem('userType', data.kind);
       setUserType(data.kind);
       navigation.replace('MainNavigator', { screen: 'Home', params: { screen: 'HomeMain' } });
     } catch (error) {

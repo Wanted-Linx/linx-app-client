@@ -4,8 +4,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '../RootNavigator';
 import SignUpProfilePresenter from './SignUpProfilePresenter';
-import type { ValidError } from '../Common/TitleTextInput';
-import { signUpApi, isApiError } from '../../api';
+import type { ValidError } from '../Common/CustomTextInput';
+import { userApi, isApiError } from '../../api';
 import { defaultErrorAlert } from '../../utils';
 
 type SignUpProfileProps = NativeStackScreenProps<RootStackParamList, 'SignUpProfile'>;

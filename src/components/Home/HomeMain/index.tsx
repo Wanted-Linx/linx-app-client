@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { useRecoilValue } from 'recoil';
 
 import { RootStackParamList } from '../../RootNavigator';
 import { MainTabParamList } from '../../MainNavigator';
@@ -10,6 +11,8 @@ import { HomeStackParamList } from '../index';
 import HomeMainPresenter from './HomeMainPresenter';
 import { defaultErrorAlert } from '../../../utils/errorUtils';
 import type { ImageData, ProjectData } from '../../Common';
+import { authAPI, projectApi } from '../../../api';
+import { userTypeState } from '../../../state';
 
 type HomeMainProps = CompositeScreenProps<
   NativeStackScreenProps<HomeStackParamList, 'HomeMain'>,
@@ -31,52 +34,19 @@ const bannerImages: ImageData[] = [
   },
 ];
 
-const projects: ProjectData[] = [
-  {
-    projectId: 1,
-    categories: ['기획', '개발'],
-    title: '채용 연계형 해커톤 해, 커리어',
-    company: 'Wanted',
-    bookmark: false,
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut dolore in hic maiores? Repellat mollitia laudantium repellendus fugit blanditiis quibusdam cupiditate eligendi doloremque incidunt, consequuntur dicta sit eaque, impedit at?',
-    endDate: 'D-14',
-    sponsorFee: '50만원',
-  },
-  {
-    projectId: 2,
-    categories: ['마케팅', '기획'],
-    title: '채용 연계형 해커톤 해, 커리어',
-    company: 'Wanted',
-    bookmark: true,
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut dolore in hic maiores? Repellat mollitia laudantium repellendus fugit blanditiis quibusdam cupiditate eligendi doloremque incidunt, consequuntur dicta sit eaque, impedit at?',
-    endDate: 'D-14',
-    sponsorFee: '50만원',
-  },
-  {
-    projectId: 3,
-    categories: ['디자인', '개발'],
-    title: '채용 연계형 해커톤 해, 커리어',
-    company: 'Wanted',
-    bookmark: false,
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut dolore in hic maiores? Repellat mollitia laudantium repellendus fugit blanditiis quibusdam cupiditate eligendi doloremque incidunt, consequuntur dicta sit eaque, impedit at?',
-    endDate: 'D-14',
-    sponsorFee: '50만원',
-  },
-];
-
 const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
-  const getBanners = async () => {
+  const userType = useRecoilValue(userTypeState);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const getProjectLList = async () => {
     try {
-      // const { data } = await realtimeApi.getRealtimes();
+      const { data } = await projectApi.getProjectList(authAPI(), 10, 0);
+      setProjects(data);
     } catch (error) {
       defaultErrorAlert();
     }
   };
   useEffect(() => {
-    // getBanners();
+    getProjectLList();
   }, []);
 
   const handelPressImage = (url: string) => console.log(url);
@@ -84,15 +54,18 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
     navigation.navigate('ProjectDetail', { projectId, isRecruiting: true });
   const handelPressLogin = () => navigation.navigate('Login', { isStudent: false });
   const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: false });
+  const handlePressAddProject = () => console.log('add');
 
   return (
     <HomeMainPresenter
+      userType={userType}
       bannerImages={bannerImages}
       projects={projects}
       onPressImage={handelPressImage}
       onPressProject={handelPressProject}
       onPressLogin={handelPressLogin}
       onPressSignUp={handelPressSignUp}
+      onPressAddProject={handlePressAddProject}
     />
   );
 };

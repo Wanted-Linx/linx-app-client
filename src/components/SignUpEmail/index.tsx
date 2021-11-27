@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSetRecoilState } from 'recoil';
 
 import { RootStackParamList } from '../RootNavigator';
-import { userApi } from '../../api';
 import SignUpEmailPresenter from './SignUpEmailPresenter';
-import type { ValidError } from '../Common/TitleTextInput';
+import type { ValidError } from '../Common/CustomTextInput';
 import { defaultErrorAlert, checkEmailValidation, checkPasswordValidation } from '../../utils';
 
 type SignUpEmailProps = NativeStackScreenProps<RootStackParamList, 'SignUpEmail'>;
 
-const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
+const SugnUpEmail: FC<SignUpEmailProps> = ({ route, navigation }) => {
+  const [isStudent, setIsStudent] = useState(route.params.isStudent);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState<ValidError>(null);
@@ -20,7 +18,7 @@ const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
 
   const handleEmailChange = (email: string) => setEmail(email);
   const handlePasswordChange = (password: string) => setPassword(password);
-  const handleNextClick = async () => {
+  const handlePressNext = async () => {
     if (email === '') {
       setErrorEmail({ error: true, errorMessage: '이메일을 입력해주세요' });
       return;
@@ -48,11 +46,12 @@ const SugnUpEmail: FC<SignUpEmailProps> = ({ navigation }) => {
 
   return (
     <SignUpEmailPresenter
+      isStudent={isStudent}
       email={email}
       password={password}
       onEmailChange={handleEmailChange}
       onPasswordChange={handlePasswordChange}
-      onNextClick={handleNextClick}
+      onPressNext={handlePressNext}
       errorEmail={errorEmail}
       errorPassword={errorPassword}
     />

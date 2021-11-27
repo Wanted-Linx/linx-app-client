@@ -32,12 +32,12 @@ const styles = StyleSheet.create({
     paddingVertical: rh(16),
     marginTop: rh(44),
   },
+  textRegisterTitle: { marginBottom: rh(12) },
   registerButton: {
     width: rw(220),
     height: rw(30),
     borderRadius: rw(2),
     backgroundColor: colors.colorGray500,
-    marginTop: rh(12),
   },
   textRegister: { ...globalStyles.textBody15R, color: colors.colorGray000 },
   projectTitle: { marginTop: rh(40) },

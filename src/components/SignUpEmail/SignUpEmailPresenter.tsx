@@ -1,65 +1,53 @@
 import React from 'react';
 import type { FC } from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { View, Text } from 'react-native';
 
 import globalStyles from '../../style/styles';
 import styles from './SignUpEmail.style';
-import { TitleTextInput, Button } from '../Common';
+import { CustomTextInput, Button } from '../Common';
 import type { ValidError } from '../Common';
 
-interface SignUpEmailPresenterProps {
+interface LoginPresenterProps {
+  isStudent: boolean;
   email: string;
   password: string;
   onEmailChange: (email: string) => void;
   onPasswordChange: (password: string) => void;
-  onNextClick: () => void;
+  onPressNext: () => void;
   errorEmail?: ValidError;
   errorPassword?: ValidError;
 }
 
-const SignUpEmailPresenter: FC<SignUpEmailPresenterProps> = ({
+const LoginPresenter: FC<LoginPresenterProps> = ({
+  isStudent,
   email,
   password,
   onEmailChange,
   onPasswordChange,
-  onNextClick,
+  onPressNext,
   errorEmail,
   errorPassword,
 }) => {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={{
-          uri: 'https://i.ytimg.com/vi/mGJulFFrgL0/maxresdefault.jpg',
-        }}
-        style={styles.imageBackground}
-        blurRadius={25}>
-        <View>
-          <Text style={[globalStyles.textHeadline29, styles.textTitle]}>{'이메일로\n5초만에 가입!'}</Text>
-          <TitleTextInput
-            title="이메일"
-            titleStyle={styles.textInputTitleEmail}
-            value={email}
-            onChangeText={(email) => onEmailChange(email)}
-            validError={errorEmail}
-            keyboardType="email-address"
-          />
-          <TitleTextInput
-            secureTextEntry
-            title="비밀번호"
-            titleStyle={styles.textInputTitlePassword}
-            value={password}
-            onChangeText={(password) => onPasswordChange(password)}
-            validError={errorPassword}
-          />
-          <Button title="다음으로" style={styles.buttonNext} onPress={onNextClick} />
-        </View>
-        <View>
-          <View style={styles.line} />
-        </View>
-      </ImageBackground>
+      <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{isStudent ? '학생 로그인' : '기업 로그인'}</Text>
+      <CustomTextInput
+        placeholder="이메일"
+        value={email}
+        onChangeText={(email) => onEmailChange(email)}
+        validError={errorEmail}
+        keyboardType="email-address"
+      />
+      <CustomTextInput
+        secureTextEntry
+        placeholder="비밀번호"
+        value={password}
+        onChangeText={(password) => onPasswordChange(password)}
+        validError={errorPassword}
+      />
+      <Button title="로그인하기" style={styles.buttonEmail} onPress={onPressNext} />
     </View>
   );
 };
 
-export default SignUpEmailPresenter;
+export default LoginPresenter;

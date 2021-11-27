@@ -11,40 +11,28 @@ export type ValidError = {
   errorMessage: string;
 } | null;
 
-export type TitleTextInputProps = ComponentProps<typeof TextInput> & {
-  normalColor?: string;
+export type CustomTextInputProps = ComponentProps<typeof TextInput> & {
   errorColor?: string;
   validError?: ValidError;
 };
 
-export const TitleTextInput: FC<TitleTextInputProps> = ({
-  normalColor = colors.colorPrimary300,
+export const CustomTextInput: FC<CustomTextInputProps> = ({
   errorColor = colors.colorError,
   validError,
   style,
   ...textInputProps
 }) => {
-  const [color, setColor] = useState(normalColor);
   const [isError, setIsError] = useState(false);
-  const [text, setText] = useState('');
 
   useEffect(() => {
     if (validError) {
-      setColor(errorColor);
       setIsError(true);
     }
   }, [validError]);
 
-  const handleChange = (text: string) => {
-    setText(text);
-    setColor(normalColor);
+  const handleChange = () => {
     if (isError) {
       setIsError(false);
-    }
-  };
-  const handleBlur = () => {
-    if (!isError && text === '') {
-      setColor(normalColor);
     }
   };
 
@@ -52,14 +40,8 @@ export const TitleTextInput: FC<TitleTextInputProps> = ({
     <View style={styles.view}>
       <TextInput
         {...textInputProps}
-        style={[
-          globalStyles.textBody14,
-          styles.textInput,
-          { borderBottomWidth: 1, borderBottomColor: color, color },
-          style,
-        ]}
-        onChange={({ nativeEvent }) => handleChange(nativeEvent.text)}
-        onBlur={() => handleBlur()}
+        style={[globalStyles.textBody14, styles.textInput, style]}
+        onChange={handleChange}
       />
       {isError ? (
         <Text style={[globalStyles.textBody14, { color: errorColor }]}>{validError?.errorMessage}</Text>

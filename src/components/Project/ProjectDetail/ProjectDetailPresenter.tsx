@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
+import { DateTime } from 'luxon';
 
 import styles from './ProjectDetail.style';
 import type { ProjectRecruitingData, ProjectWorkingData } from './index';
 import globalStyles from '../../../style/styles';
 import { Button, Tag, ProjectLog } from '../../Common';
 import { BottomModal } from '../../modal';
+import { calDateDiff } from '../../../utils';
 
 interface ShowDetailPresenterProps {
+  userType: string;
   project: ProjectRecruitingData | ProjectWorkingData | undefined;
   onPressLog: (logId: number) => void;
   onPressLogin: () => void;
   onPressSignUp: () => void;
 }
 
-const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog, onPressLogin, onPressSignUp }) => {
+const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
+  userType,
+  project,
+  onPressLog,
+  onPressLogin,
+  onPressSignUp,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModalVisible = () => setModalVisible((flag) => !flag);
@@ -28,27 +37,37 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
         overScrollMode="never"
         bounces={false}>
         <View style={styles.profileContainer}>
-          <Image style={styles.profile} source={{ uri: project.company.profile }} resizeMode="cover" />
+          <Image
+            style={styles.profile}
+            source={{
+              uri: project.company.profile_image
+                ? `data:image/png;base64,${project.company.profile_image}`
+                : 'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+            }}
+            resizeMode="cover"
+          />
           <Text style={globalStyles.textBody15R}>{project.company.name}</Text>
         </View>
-        <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{project?.title}</Text>
+        <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{project?.name}</Text>
         <Image style={styles.mainImage} source={{ uri: project.image }} resizeMode="cover" />
         <View style={styles.content}>
           <View style={styles.categoryContainer}>
-            {project.categories.map((category) => (
-              <Tag key={category} text={category} />
+            {project.task_type.map((task) => (
+              <Tag key={task} text={task} />
             ))}
           </View>
-          {'endDate' in project ? (
+          {'sponsor_fee' in project ? (
             <View style={styles.recrutingContentContainer}>
               <View style={styles.infoContainer}>
                 <View style={styles.durationContainer}>
                   <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>지원기간</Text>
-                  <Text style={globalStyles.textBody14}>{project.endDate}</Text>
+                  <Text style={globalStyles.textBody14}>
+                    D-{calDateDiff(project.applying_end_date, DateTime.now().toISODate())}
+                  </Text>
                 </View>
                 <View style={styles.feeContainer}>
                   <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>스폰서비</Text>
-                  <Text style={globalStyles.textBody14}>{project.sponsorFee}</Text>
+                  <Text style={globalStyles.textBody14}>{project.sponsor_fee / 10000}만원</Text>
                 </View>
               </View>
               <View style={styles.infoContainer}>
@@ -63,24 +82,24 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
                 <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트소개</Text>
                 <View style={styles.feeContainer}>
                   <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>프로젝트 기간</Text>
-                  <Text style={globalStyles.textBody14}>{project.duration}</Text>
+                  <Text style={globalStyles.textBody14}>{calDateDiff(project.end_date, project.start_date)}일</Text>
                 </View>
-                <Text style={[globalStyles.textBody15R, styles.textDescription]}>{project.description}</Text>
+                <Text style={[globalStyles.textBody15R, styles.textDescription]}>{project.content}</Text>
               </View>
             </View>
           ) : (
             <View>
               <View style={styles.durationContainer}>
                 <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>진행기간</Text>
-                <Text style={globalStyles.textBody14}>{project.duration}</Text>
+                <Text style={globalStyles.textBody14}>{calDateDiff(project.end_date, project.start_date)}일</Text>
               </View>
               <View style={styles.infoContainer}>
                 <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>활동내역</Text>
-                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.description}</Text>
+                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.content}</Text>
               </View>
               <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트로그</Text>
               <View style={styles.timeline}>
-                {project.logs.map((log) => (
+                {project.project_log.map((log) => (
                   <ProjectLog key={log.id} log={log} onPress={onPressLog} />
                 ))}
               </View>
@@ -106,7 +125,9 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({ project, onPressLog
           />
         ) : null}
       </ScrollView>
-      {'endDate' in project ? <Button title="지원하기" style={styles.button} onPress={toggleModalVisible} /> : null}
+      {'endDate' in project && userType === 'student' ? (
+        <Button title="지원하기" style={styles.button} onPress={toggleModalVisible} />
+      ) : null}
     </View>
   ) : null;
 };

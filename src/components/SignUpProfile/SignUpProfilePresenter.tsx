@@ -4,7 +4,7 @@ import { View, Text, ImageBackground } from 'react-native';
 
 import globalStyles from '../../style/styles';
 import styles from './SignUpProfile.style';
-import { TitleTextInput, Button } from '../Common';
+import { CustomTextInput, Button } from '../Common';
 import type { ValidError } from '../Common';
 
 interface SignUpProfilePresenterProps {
@@ -25,9 +25,7 @@ const SignUpProfilePresenter: FC<SignUpProfilePresenterProps> = ({ nickname, onN
         blurRadius={25}>
         <View>
           <Text style={[globalStyles.textHeadline29, styles.textTitle]}>{'마지막으로\n닉네임을 입력하면 끝!'}</Text>
-          <TitleTextInput
-            title="닉네임"
-            titleStyle={styles.textInputTitleNickname}
+          <CustomTextInput
             value={nickname}
             onChangeText={(nickname) => onNicknameChange(nickname)}
             validError={errorNickname}

@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 
 import globalStyles from '../../style/styles';
 import styles from './Login.style';
-import { TitleTextInput, Button, TouchableView } from '../Common';
+import { CustomTextInput, Button, TouchableView } from '../Common';
 import type { ValidError } from '../Common';
 
 interface LoginPresenterProps {
@@ -36,14 +36,14 @@ const LoginPresenter: FC<LoginPresenterProps> = ({
     <View style={styles.container}>
       <View style={styles.loginContainer}>
         <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{isStudent ? '학생 로그인' : '기업 로그인'}</Text>
-        <TitleTextInput
+        <CustomTextInput
           placeholder="이메일"
           value={email}
           onChangeText={(email) => onEmailChange(email)}
           validError={errorEmail}
           keyboardType="email-address"
         />
-        <TitleTextInput
+        <CustomTextInput
           secureTextEntry
           placeholder="비밀번호"
           value={password}

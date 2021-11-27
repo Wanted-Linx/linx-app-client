@@ -1,5 +1,5 @@
 export * from './TouchableView';
-export * from './TitleTextInput';
+export * from './CustomTextInput';
 export * from './Button';
 export * from './Tag';
 export * from './Project';

@@ -4,6 +4,8 @@ import type { NavigatorScreenParams } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SplashScreen from 'react-native-splash-screen';
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSetRecoilState } from 'recoil';
 
 import Home from './Home';
 import type { HomeStackParamList } from './Home';
@@ -25,6 +27,7 @@ import {
   ProfileTabInactive,
 } from '../assets/images';
 import colors from '../style/colors';
+import { userTypeState } from '../state';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,8 +65,14 @@ const profileOptions: BottomTabNavigationOptions = {
 };
 
 const MainNavigator: FC = () => {
+  const setUserType = useSetRecoilState(userTypeState);
+
   useEffect(() => {
     const timeOutId = setTimeout(async () => {
+      const userType = await AsyncStorage.getItem('userType');
+      if (userType) {
+        setUserType(userType);
+      }
       SplashScreen.hide();
     }, 1500);
     return () => clearTimeout(timeOutId);

@@ -1,3 +1,4 @@
 export * from './apiUtils';
 export * from './userApi';
-export * from './likeApi';
+export * from './projectApi';
+export * from './companyApi';

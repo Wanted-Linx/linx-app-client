@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { DateTime } from 'luxon';
 
 import { responsiveHeight as rh } from '../../style/dimensions';
 import globalStyles from '../../style/styles';
@@ -8,16 +9,17 @@ import colors from '../../style/colors';
 import { TouchableView } from './TouchableView';
 import { Tag } from './Tag';
 import { BookmarkActive, BookmarkInactive } from '../../assets/images';
+import { calDateDiff } from '../../utils/dateUtils';
 
 export interface ProjectData {
-  projectId: number;
-  categories: string[];
-  title: string;
-  company: string;
+  id: number;
+  task_type: string[];
+  name: string;
+  company: { name: string };
   bookmark: boolean;
-  description: string;
-  endDate: string;
-  sponsorFee: string;
+  content: string;
+  applying_end_date: string;
+  sponsor_fee: number;
 }
 
 export interface ProjectProps {
@@ -26,32 +28,32 @@ export interface ProjectProps {
 }
 
 export const Project: FC<ProjectProps> = ({
-  project: { projectId, categories, title, company, bookmark, description, endDate, sponsorFee },
+  project: { id, task_type, name, company, bookmark, content, applying_end_date, sponsor_fee },
   onPress,
 }) => {
   const [isBookmarked, setIsBookmarked] = useState(bookmark);
   return (
-    <TouchableView style={styles.container} onPress={() => onPress(projectId)}>
+    <TouchableView style={styles.container} onPress={() => onPress(id)}>
       <View style={styles.categoryContainer}>
-        {categories.map((category) => (
-          <Tag key={category} text={category} />
+        {task_type.map((type) => (
+          <Tag key={type} text={type} />
         ))}
       </View>
       <View style={styles.top}>
         <View>
-          <Text style={[globalStyles.textBody15M]}>{title}</Text>
-          <Text style={[globalStyles.textBody14, styles.textCompany]}>{company}</Text>
+          <Text style={[globalStyles.textBody15M]}>{name}</Text>
+          <Text style={[globalStyles.textBody14, styles.textCompany]}>{company.name}</Text>
         </View>
         <TouchableView style={styles.bookmark} onPress={() => setIsBookmarked((flag) => !flag)}>
           {isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
         </TouchableView>
       </View>
       <Text style={[globalStyles.textBody15R, styles.textDescription]} numberOfLines={2}>
-        {description}
+        {content}
       </Text>
       <View style={styles.bottom}>
-        <Text style={[globalStyles.textBody15R]}>{endDate}</Text>
-        <Text style={[globalStyles.textBody15R]}>{sponsorFee}</Text>
+        <Text style={[globalStyles.textBody15R]}>D-{calDateDiff(applying_end_date, DateTime.now().toISODate())}</Text>
+        <Text style={[globalStyles.textBody15R]}>{sponsor_fee / 10000}만원</Text>
       </View>
       <View style={styles.line} />
     </TouchableView>
@@ -59,7 +61,7 @@ export const Project: FC<ProjectProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { marginTop: rh(24) },
+  container: { width: '100%', marginTop: rh(24) },
   categoryContainer: { flexDirection: 'row', marginBottom: rh(10) },
   top: { flexDirection: 'row', justifyContent: 'space-between' },
   textCompany: { color: colors.colorGray300, marginTop: rh(2) },

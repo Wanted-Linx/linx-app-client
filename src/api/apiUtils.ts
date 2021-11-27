@@ -1,8 +1,9 @@
 import Axios from 'axios';
 import type { AxiosInstance } from 'axios';
 import type { AxiosError } from 'axios';
+import Config from 'react-native-config';
 
-const BASE_URL = '';
+export const BASE_URL = Config.BASE_URL;
 
 const isApiError = (err: any): err is AxiosError => Axios.isAxiosError(err);
 const API = Axios.create({
@@ -10,10 +11,10 @@ const API = Axios.create({
   timeout: 1000,
 });
 
-const authAPI = (userId: number): AxiosInstance =>
+const authAPI = (userId?: number): AxiosInstance =>
   Axios.create({
     baseURL: BASE_URL,
-    headers: { user: userId },
+    headers: { user: userId ?? 1 },
     timeout: 1000,
   });
 
