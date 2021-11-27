@@ -2,45 +2,60 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DateTime } from 'luxon';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { RootStackParamList } from '../../RootNavigator';
 import ProjectRegisterDetailPresenter from './ProjectRegisterDetailPresenter';
+import { defaultErrorAlert } from '../../../utils';
+import { authAPI, projectApi } from '../../../api';
 
 type ProjectRegisterDetailProps = NativeStackScreenProps<RootStackParamList, 'ProjectRegisterDetail'>;
 
-const ProjectRegisterDetail: FC<ProjectRegisterDetailProps> = ({ navigation }) => {
-  const [task_type, setTaskType] = useState<string[]>([]);
-  const [name, setName] = useState('');
-  const [applying_start_date, setApplyingStartDate] = useState('');
-  const [applying_end_date, setApplyingEndDate] = useState('');
-  const [sponsor_fee, setSponsorFee] = useState('');
+const ProjectRegisterDetail: FC<ProjectRegisterDetailProps> = ({ route, navigation }) => {
+  const [start_date, setStartDate] = useState('');
+  const [end_date, setEndDate] = useState('');
+  const [task_experience, setTaskExperience] = useState('');
+  const [qualification, setQualifiation] = useState('');
+  const [content, setContent] = useState('');
 
-  const handlePressType = (type: string) =>
-    setTaskType((prev) => {
-      if (!prev.includes(type)) {
-        return [...prev, type];
-      } else {
-        return prev.filter((prevType) => prevType !== type);
+  const handleStartChange = (date: Date) => setStartDate(DateTime.fromJSDate(date).toISODate());
+  const handleEndChange = (date: Date) => setEndDate(DateTime.fromJSDate(date).toISODate());
+  const handleTaskExperienceChange = (taskExperience: string) => setTaskExperience(taskExperience);
+  const handleQualifiationChange = (qualification: string) => setQualifiation(qualification);
+  const handleContentChange = (content: string) => setContent(content);
+  const handlePressAdd = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (userId) {
+        await projectApi.postProject(authAPI(parseInt(userId, 10)), {
+          ...route.params.project,
+          start_date,
+          end_date,
+          task_experience,
+          qualification,
+          content,
+        });
+        navigation.replace('MainNavigator', { screen: 'Home', params: { screen: 'HomeMain' } });
       }
-    });
-  const handleNameChange = (email: string) => setName(email);
-  const handleSponsorFeeChange = (sponsor_fee: string) => setSponsorFee(sponsor_fee);
-  const handleStartChange = (date: Date) => setApplyingStartDate(DateTime.fromJSDate(date).toISODate());
-  const handleEndChange = (date: Date) => setApplyingEndDate(DateTime.fromJSDate(date).toISODate());
-  const handlePressNext = () => {};
+    } catch (error) {
+      console.log(error);
+      defaultErrorAlert();
+    }
+  };
 
   return (
     <ProjectRegisterDetailPresenter
-      name={name}
-      sponsor_fee={sponsor_fee}
-      applying_start_date={applying_start_date}
-      applying_end_date={applying_end_date}
-      onPressType={handlePressType}
-      onNameChange={handleNameChange}
-      onSponsorFeeChange={handleSponsorFeeChange}
+      start_date={start_date}
+      end_date={end_date}
+      task_experience={task_experience}
+      qualification={qualification}
+      content={content}
       onStartChange={handleStartChange}
       onEndChange={handleEndChange}
-      onPressNext={handlePressNext}
+      onTaskExperienceChange={handleTaskExperienceChange}
+      onQualificationChange={handleQualifiationChange}
+      onContentChange={handleContentChange}
+      onPressAdd={handlePressAdd}
     />
   );
 };

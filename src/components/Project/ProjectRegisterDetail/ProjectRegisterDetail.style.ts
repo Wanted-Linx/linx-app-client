@@ -10,11 +10,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   inputContainer: { paddingHorizontal: rw(20), paddingTop: rh(32) },
-  typeContainer: { flexDirection: 'row', marginTop: rh(8), marginBottom: rh(24) },
-  textTitleApply: { marginTop: rh(12), marginBottom: rh(8) },
-  applyContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: rh(12) },
-  textApplySub: { marginRight: rw(24) },
-  buttonNext: {
+  dateContainer: { flexDirection: 'row', alignItems: 'center', marginTop: rh(8), marginBottom: rh(12) },
+  textDateSub: { marginRight: rw(24) },
+  input: { height: rh(120) },
+  buttonAdd: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
