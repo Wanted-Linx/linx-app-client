@@ -15,40 +15,24 @@ import globalStyles from '../../../style/styles';
 
 type ProjectDetailProps = NativeStackScreenProps<RootStackParamList, 'ProjectDetail'>;
 
-export interface ProjectRecruitingData {
+export interface ProjectDetailData {
   id: number;
   name: string;
   company: {
     id: number;
     name: string;
-    profile_image?: string;
   };
   image: string;
   task_type: string[];
   applying_end_date: string;
   sponsor_fee: number;
-  experience: string;
+  task_experience: string;
   qualification: string;
   content: string;
   start_date: string;
   end_date: string;
-  bookmark: boolean;
-}
-
-export interface ProjectWorkingData {
-  id: number;
-  name: string;
-  company: {
-    id: number;
-    name: string;
-    profile_image?: string;
-  };
-  image: string;
-  task_type: string[];
-  start_date: string;
-  end_date: string;
-  content: string;
   project_log: LogData[];
+  bookmark: boolean;
 }
 
 export interface LogData {
@@ -57,9 +41,30 @@ export interface LogData {
   end_date: string;
 }
 
+const dummy = [
+  {
+    id: 1,
+    title: '프로젝트 발표',
+    end_date: '11월 30일',
+  },
+  {
+    id: 2,
+    title: '프로젝트 발표 준비',
+    end_date: '11월 23일',
+  },
+  {
+    id: 3,
+    title: '프로젝트 기획',
+    end_date: '11월 12일',
+  },
+];
+
 const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   const userType = useRecoilValue(userTypeState);
-  const [project, setProject] = useState<ProjectRecruitingData | ProjectWorkingData>();
+  const [project, setProject] = useState<ProjectDetailData>();
+  const [profileImage, setProfileImage] = useState(
+    'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+  );
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useLayoutEffect(() => {
@@ -81,17 +86,15 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
     try {
       const { data } = await projectApi.getProject(authAPI(1), route.params.projectId);
       data.company.profile_image = null;
-      setProject(
-        route.params.isRecruiting
-          ? {
-              ...data,
-              image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
-              experience: '해커리어는 대학생 및 취업 준비생 4인이 팀을 이뤄 참가하는 6주간의 IT 오디션입니다!',
-            }
-          : { ...data, image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg' },
-      );
+      if (!data.project_log.length) {
+        data.project_log = dummy;
+      }
+      setProject({
+        ...data,
+        image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
+      });
+      // setProject();
     } catch (error) {
-      console.log(error);
       defaultErrorAlert();
     }
   };
@@ -102,10 +105,8 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   const getProfileImage = async () => {
     try {
       if (project) {
-        const profile = await companyApi.getProfileImage(authAPI(project.company.id, 'blob'));
-        const { company, ...data } = project;
-        company.profile_image = URL.createObjectURL(profile.data);
-        setProject({ ...data, company });
+        const { data } = await companyApi.getProfileImage(authAPI(project.company.id, 'blob'));
+        setProfileImage(URL.createObjectURL(data));
       }
     } catch (error) {
       console.log(error);
@@ -119,14 +120,18 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   const handelePressLog = (logId: number) => console.log(logId);
   const handelPressLogin = () => navigation.navigate('Login', { isStudent: true });
   const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: true });
+  const handlePressApply = () => console.log('apply');
 
   return (
     <ProjectDetailPresenter
+      isRecruiting={route.params.isRecruiting}
       userType={userType}
       project={project}
+      profileImage={profileImage}
       onPressLog={handelePressLog}
       onPressLogin={handelPressLogin}
       onPressSignUp={handelPressSignUp}
+      onPressApply={handlePressApply}
     />
   );
 };

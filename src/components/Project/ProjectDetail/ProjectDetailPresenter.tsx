@@ -4,26 +4,32 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import { DateTime } from 'luxon';
 
 import styles from './ProjectDetail.style';
-import type { ProjectRecruitingData, ProjectWorkingData } from './index';
+import type { ProjectDetailData } from './index';
 import globalStyles from '../../../style/styles';
 import { Button, Tag, ProjectLog } from '../../Common';
 import { BottomModal } from '../../modal';
 import { calDateDiff } from '../../../utils';
 
 interface ShowDetailPresenterProps {
+  isRecruiting: boolean;
   userType: string;
-  project: ProjectRecruitingData | ProjectWorkingData | undefined;
+  project: ProjectDetailData | undefined;
+  profileImage: string;
   onPressLog: (logId: number) => void;
   onPressLogin: () => void;
   onPressSignUp: () => void;
+  onPressApply: () => void;
 }
 
 const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
+  isRecruiting,
   userType,
   project,
+  profileImage,
   onPressLog,
   onPressLogin,
   onPressSignUp,
+  onPressApply,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -37,15 +43,7 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
         overScrollMode="never"
         bounces={false}>
         <View style={styles.profileContainer}>
-          <Image
-            style={styles.profile}
-            source={{
-              uri: project.company.profile_image
-                ? project.company.profile_image
-                : 'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
-            }}
-            resizeMode="cover"
-          />
+          <Image style={styles.profile} source={{ uri: profileImage }} resizeMode="cover" />
           <Text style={globalStyles.textBody15R}>{project.company.name}</Text>
         </View>
         <Text style={[globalStyles.textHeadline20, styles.textTitle]}>{project?.name}</Text>
@@ -56,7 +54,7 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
               <Tag key={task} text={task} />
             ))}
           </View>
-          {'sponsor_fee' in project ? (
+          {isRecruiting ? (
             <View style={styles.recrutingContentContainer}>
               <View style={styles.infoContainer}>
                 <View style={styles.durationContainer}>
@@ -72,7 +70,7 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
               </View>
               <View style={styles.infoContainer}>
                 <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>직무경험</Text>
-                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.experience}</Text>
+                <Text style={[globalStyles.textBody15R, styles.textInfoContent]}>{project.task_experience}</Text>
               </View>
               <View style={styles.infoContainer}>
                 <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>지원자격</Text>
@@ -125,8 +123,12 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
           />
         ) : null}
       </ScrollView>
-      {'endDate' in project && userType === 'student' ? (
-        <Button title="지원하기" style={styles.button} onPress={toggleModalVisible} />
+      {isRecruiting && userType !== 'company' ? (
+        <Button
+          title="지원하기"
+          style={styles.button}
+          onPress={userType === 'student' ? onPressApply : toggleModalVisible}
+        />
       ) : null}
     </View>
   ) : null;

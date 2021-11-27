@@ -13,7 +13,7 @@ export interface ProfileSearchData {
   name: string;
   image: string;
   description: string;
-  business_type?: string;
+  business_type?: string[];
   organization?: string;
 }
 
@@ -48,7 +48,7 @@ export const ProfileSearch: FC<ProfileSearchProps> = ({ profile, onPress }) => {
       <View style={styles.textContainer}>
         <Text style={globalStyles.textBody15M}>{profile.name}</Text>
         <Text style={[globalStyles.textBody14, styles.textCategory]}>
-          {profile.business_type ?? profile.organization}
+          {profile.business_type?.join(' ') ?? profile.organization}
         </Text>
         <Text style={[globalStyles.textBody15R, styles.textDescription]} numberOfLines={1}>
           {profile.description}

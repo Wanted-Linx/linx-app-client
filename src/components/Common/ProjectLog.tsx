@@ -26,7 +26,7 @@ export const ProjectLog: FC<ProjectLogProps> = ({ log, onPress }) => {
             <Line x1={rw(6)} y1="0" x2={rw(6)} y2={rw(80)} stroke={colors.colorGray300} strokeWidth="2" />
           </Svg>
         </View>
-        <Text style={globalStyles.textBody14}>{log.date}</Text>
+        <Text style={globalStyles.textBody14}>{log.end_date}</Text>
       </View>
       <TouchableView onPress={() => onPress(log.id)} style={styles.logContent}>
         <Text style={globalStyles.textBody15R}>{log.title}</Text>

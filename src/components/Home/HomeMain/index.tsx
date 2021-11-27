@@ -41,6 +41,7 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
     try {
       const { data } = await projectApi.getProjectList(authAPI(), 10, 0);
       setProjects(data);
+      console.log(data);
     } catch (error) {
       defaultErrorAlert();
     }

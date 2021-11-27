@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: rh(20),
+    marginTop: rh(40),
     paddingHorizontal: rw(88),
   },
   countView: { alignItems: 'center' },

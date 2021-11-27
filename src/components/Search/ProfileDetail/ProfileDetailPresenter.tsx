@@ -10,9 +10,10 @@ import { ProjectProfile, TouchableView } from '../../Common';
 interface ProfileDetailPresenterProps {
   profile: CompanyProfile | ClubProfile | StudentProfile | undefined;
   profileImage: string;
+  onPressProject: (projectId: number) => void;
 }
 
-const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile, profileImage }) => {
+const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile, profileImage, onPressProject }) => {
   return profile ? (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -66,13 +67,13 @@ const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile, prof
           style={styles.link}
           onPress={async () => await Linking.openURL('hompage' in profile ? profile.hompage : profile.profile_link)}>
           <Text style={globalStyles.textBody15R}>
-            {'hompage' in profile ? '홈페이지 바로가기' : '포트폴리오 바로가기'}
+            {'hompage' in profile || 'organization' in profile ? '홈페이지 바로가기' : '포트폴리오 바로가기'}
           </Text>
         </TouchableView>
       </View>
       <Text style={[globalStyles.textBody15M, styles.textProjectTitle]}>진행프로젝트</Text>
       {profile.projects.map((project) => (
-        <ProjectProfile key={project.project_id} project={project} onPress={() => console.log(project.project_id)} />
+        <ProjectProfile key={project.project_id} project={project} onPress={onPressProject} />
       ))}
     </ScrollView>
   ) : null;
