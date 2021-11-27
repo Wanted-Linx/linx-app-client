@@ -35,7 +35,6 @@ const Login: FC<LoginProps> = ({ route, navigation }) => {
     const body = { email, password, kind: isStudent ? 'student' : 'company' };
     try {
       const { data } = await userApi.emailLogin(body);
-      console.log(data);
       await AsyncStorage.setItem('userId', data.id.toString());
       await AsyncStorage.setItem('userType', data.kind);
       setUserType(data.kind);

@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.colorGray500,
     paddingBottom: rh(10),
   },
-  textButton: { color: colors.colorGray000 },
 });
 
 export default styles;

@@ -12,11 +12,13 @@ export type ValidError = {
 } | null;
 
 export type CustomTextInputProps = ComponentProps<typeof TextInput> & {
+  title?: string;
   errorColor?: string;
   validError?: ValidError;
 };
 
 export const CustomTextInput: FC<CustomTextInputProps> = ({
+  title,
   errorColor = colors.colorError,
   validError,
   style,
@@ -38,6 +40,7 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
 
   return (
     <View style={styles.view}>
+      {title ? <Text style={[globalStyles.textBody14, styles.textTitle]}>{title}</Text> : null}
       <TextInput
         {...textInputProps}
         style={[globalStyles.textBody14, styles.textInput, style]}
@@ -52,6 +55,7 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
 
 const styles = StyleSheet.create({
   view: { width: '100%', marginBottom: rh(12) },
+  textTitle: { marginBottom: rh(8) },
   textInput: {
     backgroundColor: colors.colorGray000,
     borderColor: `${colors.colorGray300}40`,

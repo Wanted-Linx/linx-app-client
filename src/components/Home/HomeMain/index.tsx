@@ -41,7 +41,6 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
     try {
       const { data } = await projectApi.getProjectList(authAPI(), 10, 0);
       setProjects(data);
-      console.log(data);
     } catch (error) {
       defaultErrorAlert();
     }
@@ -55,7 +54,7 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
     navigation.navigate('ProjectDetail', { projectId, isRecruiting: true });
   const handelPressLogin = () => navigation.navigate('Login', { isStudent: false });
   const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: false });
-  const handlePressAddProject = () => console.log('add');
+  const handlePressAddProject = () => navigation.navigate('ProjectRegisterInfo');
 
   return (
     <HomeMainPresenter

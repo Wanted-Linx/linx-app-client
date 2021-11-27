@@ -9,6 +9,7 @@ import Login from './Login';
 import SignUpEmail from './SignUpEmail';
 import ProjectDetail from './Project/ProjectDetail';
 import ProjectRegisterInfo from './Project/ProjectRegisterInfo';
+import ProjectRegisterDetail from './Project/ProjectRegisterDetail';
 import { leftArrowScreenOptions } from './Home';
 
 const Stack = createNativeStackNavigator();
@@ -18,7 +19,16 @@ export type RootStackParamList = {
   Login: { isStudent: boolean };
   SignUpEmail: { isStudent: boolean };
   ProjectDetail: { projectId: number; isRecruiting: boolean };
-  ProjectRegisterInfo: {};
+  ProjectRegisterInfo: undefined;
+  ProjectRegisterDetail: {
+    project: {
+      task_type: string[];
+      name: string;
+      applying_start_date: string;
+      applying_end_date: string;
+      sponsor_fee: number;
+    };
+  };
 };
 
 const screenOptions: NativeStackNavigationOptions = {
@@ -43,6 +53,7 @@ const RootNavigator = () => {
       />
       <Stack.Group screenOptions={({ navigation }) => leftArrowScreenOptions(navigation, '프로젝트 등록')}>
         <Stack.Screen name="ProjectRegisterInfo" component={ProjectRegisterInfo} />
+        <Stack.Screen name="ProjectRegisterDetail" component={ProjectRegisterDetail} />
       </Stack.Group>
     </Stack.Navigator>
   );

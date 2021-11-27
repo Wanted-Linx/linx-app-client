@@ -3,11 +3,11 @@ import type { FC } from 'react';
 import { View, Text } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-import styles from './ProjectRegisterInfo.style';
+import styles from './ProjectRegisterDetail.style';
 import { CustomTextInput, Button, TaskType, DateTextInput } from '../../Common';
 import globalStyles from '../../../style/styles';
 
-interface ProjectRegisterInfoPresenterProps {
+interface ProjectRegisterDetailPresenterProps {
   name: string;
   sponsor_fee: string;
   applying_start_date: string;
@@ -22,7 +22,7 @@ interface ProjectRegisterInfoPresenterProps {
 
 const types = ['기획', '마케팅', '개발', '디자인'];
 
-const ProjectRegisterInfoPresenter: FC<ProjectRegisterInfoPresenterProps> = ({
+const ProjectRegisterDetailPresenter: FC<ProjectRegisterDetailPresenterProps> = ({
   name,
   sponsor_fee,
   applying_start_date,
@@ -99,4 +99,4 @@ const ProjectRegisterInfoPresenter: FC<ProjectRegisterInfoPresenterProps> = ({
   );
 };
 
-export default ProjectRegisterInfoPresenter;
+export default ProjectRegisterDetailPresenter;
