@@ -34,9 +34,9 @@ const SearchMainPresenter: FC<SearchMainPresenterProps> = ({ isClubOn, profiles,
       </SafeAreaView>
       <FlatList
         data={profiles}
-        renderItem={({ item }) => <ProfileSearch profile={item} onPress={() => onPressProfile(item.profileId)} />}
+        renderItem={({ item }) => <ProfileSearch profile={item} onPress={onPressProfile} />}
         extraData={isClubOn}
-        keyExtractor={(item) => item.profileId.toString()}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.profileContainer}
       />
     </View>

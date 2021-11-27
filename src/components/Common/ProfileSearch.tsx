@@ -8,12 +8,12 @@ import colors from '../../style/colors';
 import { TouchableView } from './TouchableView';
 
 export interface ProfileSearchData {
-  profileId: number;
+  id: number;
   name: string;
   image: string;
   description: string;
-  category?: string;
-  university?: string;
+  business_type?: string;
+  organization?: string;
 }
 
 export interface ProfileSearchProps {
@@ -23,11 +23,20 @@ export interface ProfileSearchProps {
 
 export const ProfileSearch: FC<ProfileSearchProps> = ({ profile, onPress }) => {
   return (
-    <TouchableView style={styles.container} viewStyle={styles.viewStyle} onPress={() => onPress(profile.profileId)}>
-      <Image source={{ uri: profile.image }} style={styles.profile} />
+    <TouchableView style={styles.container} viewStyle={styles.viewStyle} onPress={() => onPress(profile.id)}>
+      <Image
+        source={{
+          uri:
+            profile.image ??
+            'https://media-exp1.licdn.com/dms/image/C560BAQGQWpaAuJLC8A/company-logo_200_200/0/1626253203412?e=2159024400&v=beta&t=b7c6YH1wVtA0gU8sjBc3_qSioe1AVqTgyxulWBtdf0g',
+        }}
+        style={styles.profile}
+      />
       <View style={styles.textContainer}>
         <Text style={globalStyles.textBody15M}>{profile.name}</Text>
-        <Text style={[globalStyles.textBody14, styles.textCategory]}>{profile.category ?? profile.university}</Text>
+        <Text style={[globalStyles.textBody14, styles.textCategory]}>
+          {profile.business_type ?? profile.organization}
+        </Text>
         <Text style={[globalStyles.textBody15R, styles.textDescription]} numberOfLines={1}>
           {profile.description}
         </Text>
