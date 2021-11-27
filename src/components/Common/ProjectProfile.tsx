@@ -9,13 +9,13 @@ import { TouchableView } from './TouchableView';
 import { Tag } from './Tag';
 
 export interface ProjectProfileData {
-  projectId: number;
+  project_id: number;
   categories: string[];
-  title: string;
+  project_name: string;
   description: string;
   duration: string;
   club: string;
-  company: string;
+  company_name: string;
 }
 
 export interface ProjectProfileProps {
@@ -24,11 +24,19 @@ export interface ProjectProfileProps {
 }
 
 export const ProjectProfile: FC<ProjectProfileProps> = ({
-  project: { projectId, categories, title, description, duration, club, company },
+  project: {
+    project_id,
+    categories = ['기획', '마케팅'],
+    project_name,
+    description = '해커리어는 대학생 및 취업 준비생 4인이 팀을 이뤄 참가하는 6주간의 IT 오디션입니다!',
+    duration = '11.20~12.30',
+    club = 'DSC',
+    company_name,
+  },
   onPress,
 }) => {
   return (
-    <TouchableView style={styles.container} onPress={() => onPress(projectId)}>
+    <TouchableView style={styles.container} onPress={() => onPress(project_id)}>
       <View style={styles.categoryContainer}>
         {categories.map((category) => (
           <Tag key={category} text={category} />
@@ -36,9 +44,9 @@ export const ProjectProfile: FC<ProjectProfileProps> = ({
       </View>
       <View style={styles.top}>
         <View>
-          <Text style={[globalStyles.textBody15M]}>{title}</Text>
+          <Text style={[globalStyles.textBody15M]}>{project_name}</Text>
           <View style={styles.groupContainer}>
-            <Text style={[globalStyles.textBody15R]}>{company} / </Text>
+            <Text style={[globalStyles.textBody15R]}>{company_name} / </Text>
             <Text style={[globalStyles.textBody15R]}>{club}</Text>
           </View>
         </View>

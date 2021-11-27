@@ -5,6 +5,8 @@ const companyApi = {
   getProfileImage: async (authAPI: AxiosInstance) => await authAPI.get(`${COMPANY_ENDPOINT}/profile/images`),
   getCompanyList: async (authAPI: AxiosInstance, limit: number, offset: number) =>
     await authAPI.get(`${COMPANY_ENDPOINT}?limit=${limit}&offset=${offset}`),
+  getCompany: async (authAPI: AxiosInstance, companyId: number) =>
+    await authAPI.get(`${COMPANY_ENDPOINT}/${companyId}`),
 };
 
 export { companyApi };

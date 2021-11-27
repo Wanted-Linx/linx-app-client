@@ -9,21 +9,34 @@ import { ProjectProfile, TouchableView } from '../../Common';
 
 interface ProfileDetailPresenterProps {
   profile: CompanyProfile | ClubProfile | StudentProfile | undefined;
+  profileImage: string;
 }
 
-const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile }) => {
+const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile, profileImage }) => {
   return profile ? (
     <ScrollView
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
       overScrollMode="never"
       bounces={false}>
-      <Image source={{ uri: profile?.image }} style={styles.profile} />
-      <Text style={globalStyles.textBody15M}>{profile?.name}</Text>
-      <Text style={[globalStyles.textBody15M, styles.textCategory]}>
-        {'category' in profile ? profile.category : profile.interests.join('/')}
+      <Image source={{ uri: profileImage }} style={styles.profile} />
+      <Text style={globalStyles.textBody15M}>
+        {profile?.name} ∙{' '}
+        <Text style={[globalStyles.textBody15M, styles.textCategory]}>
+          {'business_type' in profile
+            ? profile.business_type.join(' ')
+            : 'university' in profile
+            ? profile.university
+            : profile.organization}
+        </Text>
       </Text>
-      <Text style={globalStyles.textBody15M}>{'university' in profile ? profile.university : profile.address}</Text>
+      <Text style={[globalStyles.textBody15M, styles.textSub]}>
+        {'address' in profile
+          ? profile.address
+          : profile.interested_type
+          ? profile.interested_type.join('/')
+          : '기획/마케팅'}
+      </Text>
       <View style={styles.countContainer}>
         <View style={styles.countView}>
           <Text style={[globalStyles.textBody14, styles.textCountTitle]}>
@@ -51,7 +64,7 @@ const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile }) =>
         <Text style={[globalStyles.textBody15R, styles.textDescription]}>{profile.description}</Text>
         <TouchableView
           style={styles.link}
-          onPress={async () => await Linking.openURL('hompage' in profile ? profile.hompage : profile.portfolio)}>
+          onPress={async () => await Linking.openURL('hompage' in profile ? profile.hompage : profile.profile_link)}>
           <Text style={globalStyles.textBody15R}>
             {'hompage' in profile ? '홈페이지 바로가기' : '포트폴리오 바로가기'}
           </Text>
@@ -59,7 +72,7 @@ const ProfileDetailPresenter: FC<ProfileDetailPresenterProps> = ({ profile }) =>
       </View>
       <Text style={[globalStyles.textBody15M, styles.textProjectTitle]}>진행프로젝트</Text>
       {profile.projects.map((project) => (
-        <ProjectProfile key={project.projectId} project={project} onPress={() => console.log(project.projectId)} />
+        <ProjectProfile key={project.project_id} project={project} onPress={() => console.log(project.project_id)} />
       ))}
     </ScrollView>
   ) : null;
