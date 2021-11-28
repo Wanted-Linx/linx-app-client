@@ -12,7 +12,7 @@ import { TouchableView } from './TouchableView';
 
 export interface ProjectLogProps {
   log: LogData;
-  onPress: (logId: number) => void;
+  onPress: () => void;
 }
 
 export const ProjectLog: FC<ProjectLogProps> = ({ log, onPress }) => {
@@ -29,7 +29,7 @@ export const ProjectLog: FC<ProjectLogProps> = ({ log, onPress }) => {
         </View>
         <Text style={globalStyles.textBody14}>{DateTime.fromISO(log.end_date).toFormat('MM월 dd일')}</Text>
       </View>
-      <TouchableView onPress={() => onPress(log.id)} style={styles.logContent}>
+      <TouchableView onPress={onPress} style={styles.logContent}>
         <Text style={globalStyles.textBody15R}>{log.title}</Text>
       </TouchableView>
     </View>

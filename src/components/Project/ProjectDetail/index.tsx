@@ -12,6 +12,7 @@ import { TouchableView } from '../../Common';
 import { BookmarkActive, BookmarkInactive } from '../../../assets/images';
 import { responsiveWidth as rw } from '../../../style/dimensions';
 import globalStyles from '../../../style/styles';
+import type { LogDetailData } from '../ProjectLogDetail';
 
 type ProjectDetailProps = NativeStackScreenProps<RootStackParamList, 'ProjectDetail'>;
 
@@ -31,14 +32,8 @@ export interface ProjectDetailData {
   content: string;
   start_date: string;
   end_date: string;
-  project_log: LogData[];
+  project_log: LogDetailData[];
   bookmark: boolean;
-}
-
-export interface LogData {
-  id: number;
-  title: string;
-  end_date: string;
 }
 
 const dummy = [
@@ -119,7 +114,11 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   }, [project]);
 
   const handlePressBookmark = () => setIsBookmarked((flag) => !flag);
-  const handelePressLog = (logId: number) => console.log(logId);
+  const handelePressLog = (index: number) => {
+    if (project?.project_log[index]) {
+      navigation.navigate('ProjectLogDetail', { log: project?.project_log[index] });
+    }
+  };
   const handelPressLogin = () => navigation.navigate('Login', { isStudent: true });
   const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: true });
   const handlePressApply = () => console.log('apply');

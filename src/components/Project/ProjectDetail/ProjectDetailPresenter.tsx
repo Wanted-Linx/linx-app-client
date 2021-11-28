@@ -16,7 +16,7 @@ interface ShowDetailPresenterProps {
   userType: string;
   project: ProjectDetailData | undefined;
   profileImage: string;
-  onPressLog: (logId: number) => void;
+  onPressLog: (index: number) => void;
   onPressLogin: () => void;
   onPressSignUp: () => void;
   onPressApply: () => void;
@@ -100,8 +100,8 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
               </View>
               <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>프로젝트로그</Text>
               <View style={styles.timeline}>
-                {project.project_log.map((log) => (
-                  <ProjectLog key={log.id} log={log} onPress={onPressLog} />
+                {project.project_log.map((log, index) => (
+                  <ProjectLog key={index} log={log} onPress={() => onPressLog(index)} />
                 ))}
               </View>
             </View>

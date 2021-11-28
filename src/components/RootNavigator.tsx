@@ -10,6 +10,8 @@ import SignUpEmail from './SignUpEmail';
 import ProjectDetail from './Project/ProjectDetail';
 import ProjectRegisterInfo from './Project/ProjectRegisterInfo';
 import ProjectRegisterDetail from './Project/ProjectRegisterDetail';
+import ProjectLogDetail from './Project/ProjectLogDetail';
+import type { LogDetailData } from './Project/ProjectLogDetail';
 import { leftArrowScreenOptions } from './Home';
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +31,7 @@ export type RootStackParamList = {
       sponsor_fee: number;
     };
   };
+  ProjectLogDetail: { log: LogDetailData };
 };
 
 const screenOptions: NativeStackNavigationOptions = {
@@ -50,6 +53,11 @@ const RootNavigator = () => {
         name="ProjectDetail"
         component={ProjectDetail}
         options={({ navigation }) => leftArrowScreenOptions(navigation)}
+      />
+      <Stack.Screen
+        name="ProjectLogDetail"
+        component={ProjectLogDetail}
+        options={({ navigation }) => leftArrowScreenOptions(navigation, '프로젝트 로그')}
       />
       <Stack.Group screenOptions={({ navigation }) => leftArrowScreenOptions(navigation, '프로젝트 등록')}>
         <Stack.Screen name="ProjectRegisterInfo" component={ProjectRegisterInfo} />

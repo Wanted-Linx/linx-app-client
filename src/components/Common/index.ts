@@ -11,3 +11,4 @@ export * from './ProjectProfile';
 export * from './ProfileSearch';
 export * from './TaskType';
 export * from './DateTextInput';
+export * from './Feedback';
