@@ -4,7 +4,6 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { useRecoilValue } from 'recoil';
-import { DateTime } from 'luxon';
 
 import { RootStackParamList } from '../../RootNavigator';
 import { MainTabParamList } from '../../MainNavigator';
@@ -41,7 +40,6 @@ const HomeMain: FC<HomeMainProps> = ({ navigation }) => {
   const getProjectLList = async () => {
     try {
       const { data } = await projectApi.getProjectList(authAPI(), 10, 0);
-      console.log(data);
       data.sort((a: any, b: any) => {
         return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
       });

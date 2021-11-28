@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import type { FC } from 'react';
+import { Alert } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useRecoilValue } from 'recoil';
 
@@ -121,7 +122,10 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
   };
   const handelPressLogin = () => navigation.navigate('Login', { isStudent: true });
   const handelPressSignUp = () => navigation.navigate('SignUpEmail', { isStudent: true });
-  const handlePressApply = () => console.log('apply');
+  const handlePressApply = () => {
+    Alert.alert('지원되었습니다!');
+    navigation.navigate('MainNavigator', { screen: 'Home', params: { screen: 'HomeMain' } });
+  };
 
   return (
     <ProjectDetailPresenter
