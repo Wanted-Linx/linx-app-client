@@ -4,7 +4,7 @@ import { responsiveWidth as rw, responsiveHeight as rh } from '../../../style/di
 import colors from '../../../style/colors';
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: colors.colorBackground },
   topTab: {
     flexDirection: 'row',
     alignItems: 'center',

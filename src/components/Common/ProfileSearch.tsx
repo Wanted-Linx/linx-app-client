@@ -36,7 +36,7 @@ export const ProfileSearch: FC<ProfileSearchProps> = ({ profile, onPress }) => {
       }
       setImage(URL.createObjectURL(result.data));
     } catch (error) {
-      console.log(error);
+      console.log(profile.name, error);
     }
   };
   useEffect(() => {

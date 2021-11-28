@@ -91,9 +91,11 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ route, navigation }) => {
       }
       setProject({
         ...data,
-        image: 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
+        image:
+          data.name === '빔유어드림!'
+            ? 'https://w.namu.la/s/31c424261bc2f3752f01dece5929dffb4da1c8913e1c69f1acd56fb70b3d2f655b249bd707b71efd3e839904cb063ab07f8504108720bdd80cae46cb0d24bab09771bd71235694324d8da872b512da4e'
+            : 'https://cf-cpi.campuspick.com/activity/1634363522073924.jpg',
       });
-      // setProject();
     } catch (error) {
       defaultErrorAlert();
     }

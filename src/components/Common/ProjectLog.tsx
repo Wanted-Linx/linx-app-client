@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Svg, Circle, Line } from 'react-native-svg';
+import { DateTime } from 'luxon';
 
 import { LogData } from '../Project/ProjectDetail/index';
 import { responsiveWidth as rw } from '../../style/dimensions';
@@ -26,7 +27,7 @@ export const ProjectLog: FC<ProjectLogProps> = ({ log, onPress }) => {
             <Line x1={rw(6)} y1="0" x2={rw(6)} y2={rw(80)} stroke={colors.colorGray300} strokeWidth="2" />
           </Svg>
         </View>
-        <Text style={globalStyles.textBody14}>{log.end_date}</Text>
+        <Text style={globalStyles.textBody14}>{DateTime.fromISO(log.end_date).toFormat('MM월 dd일')}</Text>
       </View>
       <TouchableView onPress={() => onPress(log.id)} style={styles.logContent}>
         <Text style={globalStyles.textBody15R}>{log.title}</Text>

@@ -67,7 +67,7 @@ const HomeMainPresenter: FC<HomeMainPresenterProps> = ({
             icon={() => <AddIconWhite />}
             style={styles.registerButton}
             textStyle={styles.textRegister}
-            onPress={userType !== 'company' ? onPressAddProject : toggleModalVisible}
+            onPress={userType !== 'company' ? toggleModalVisible : onPressAddProject}
           />
         </View>
       ) : null}

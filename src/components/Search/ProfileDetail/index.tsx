@@ -72,7 +72,7 @@ const dummy = [
     company_name: '라이앤캐처스',
   },
   {
-    project_id: 1,
+    project_id: 2,
     categories: ['마케팅', '기획', '디자인'],
     project_name: '빔유어드림!',
     description:

@@ -9,6 +9,7 @@ import globalStyles from '../../../style/styles';
 import { Button, Tag, ProjectLog } from '../../Common';
 import { BottomModal } from '../../modal';
 import { calDateDiff } from '../../../utils';
+import { defaultFormat } from '../../../utils';
 
 interface ShowDetailPresenterProps {
   isRecruiting: boolean;
@@ -89,7 +90,9 @@ const ShowDetailPresenter: FC<ShowDetailPresenterProps> = ({
             <View>
               <View style={styles.durationContainer}>
                 <Text style={[globalStyles.textBody14, styles.textInfoSubtitle]}>진행기간</Text>
-                <Text style={globalStyles.textBody14}>{calDateDiff(project.end_date, project.start_date)}일</Text>
+                <Text style={globalStyles.textBody14}>
+                  {defaultFormat(project.start_date)}-{defaultFormat(project.end_date)}
+                </Text>
               </View>
               <View style={styles.infoContainer}>
                 <Text style={[globalStyles.textBody15M, styles.textInfoTitle]}>활동내역</Text>
